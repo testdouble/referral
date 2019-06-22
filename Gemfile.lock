@@ -1,0 +1,42 @@
+PATH
+  remote: .
+  specs:
+    refer (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ast (2.4.0)
+    jaro_winkler (1.5.3)
+    minitest (5.11.3)
+    parallel (1.17.0)
+    parser (2.6.3.0)
+      ast (~> 2.4.0)
+    psych (3.1.0)
+    rainbow (3.0.0)
+    rake (12.3.2)
+    rubocop (0.67.2)
+      jaro_winkler (~> 1.5.1)
+      parallel (~> 1.10)
+      parser (>= 2.5, != 2.5.1.1)
+      psych (>= 3.1.0)
+      rainbow (>= 2.2.2, < 4.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 1.4.0, < 1.6)
+    ruby-progressbar (1.10.1)
+    standard (0.0.40)
+      rubocop (~> 0.67.1)
+    unicode-display_width (1.5.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 2.0)
+  minitest (~> 5.0)
+  rake (~> 12.3)
+  refer!
+  standard
+
+BUNDLED WITH
+   2.0.2
