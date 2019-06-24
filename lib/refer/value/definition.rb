@@ -1,13 +1,14 @@
+require_relative "token"
+
 module Refer
   module Value
-    class Definition < Struct.new(
-      :name, :node_type, :parent, :file, :line, :column, keyword_init: true
-    )
-
+    class Definition < Token
       def self.from_ast_node(node, parent, file)
         return unless (type = TYPES.values.find { |d| node.type == d.ast_type })
 
         name = if [:CLASS, :MODULE].include?(node.type)
+          require "pry"
+          binding.pry
           node.children[0].children[1]
         elsif [:CDECL, :DEFN].include?(node.type)
           node.children[0]
@@ -29,9 +30,23 @@ module Refer
         module: NodeType.new(name: :module, ast_type: :MODULE),
         class: NodeType.new(name: :class, ast_type: :CLASS),
         constant: NodeType.new(name: :constant, ast_type: :CDECL),
-        static_method: NodeType.new(name: :static_method, ast_type: :DEFS),
+        class_method: NodeType.new(name: :class_method, ast_type: :DEFS),
         instance_method: NodeType.new(name: :instance_method, ast_type: :DEFN),
       }
+
+      def definition?
+        true
+      end
+
+      def joiner_syntax
+        if node_type === TYPES[:instance_method]
+          "#"
+        elsif node_type === TYPES[:class_method]
+          "."
+        else
+          "::"
+        end
+      end
     end
   end
 end

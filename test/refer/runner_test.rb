@@ -2,25 +2,32 @@ require "test_helper"
 
 module Refer
   class RunnerTest < ReferTest
+    def setup
+      @subject = Runner.new
+    end
+
     def test_fixture_1
       @file = "test/fixture/1.rb"
-      runner = Runner.new(
+
+      result = @subject.call(
         file_pattern: "test/fixture/1.r*"
       )
-
-      result = runner.call
 
       defs = result.definitions
       assert_includes defs, bar = def_for(:Bar, :module, 2, 0)
       assert_includes defs, def_for(:STUFFS, :constant, 3, 2, bar)
-      assert_includes defs, def_for(:baz, :static_method, 4, 2, bar)
+      assert_includes defs, def_for(:baz, :class_method, 4, 2, bar)
       assert_includes defs, def_for(:qux!, :instance_method, 7, 2, bar)
       assert_includes defs, foo = def_for(:Foo, :class, 10, 2, bar)
       assert_includes defs, def_for(:THINGS, :constant, 11, 4, foo)
-      assert_includes defs, def_for(:foz, :static_method, 13, 4, foo)
+      assert_includes defs, def_for(:foz, :class_method, 13, 4, foo)
       assert_includes defs, def_for(:fiz, :instance_method, 16, 4, foo)
 
       refs = result.references
+      # line 2: module Bar
+      assert_includes refs, ref_for(:Bar, :double_colon, 2, 7)
+      # line 10: class Foo
+      assert_includes refs, ref_for(:Foo, :double_colon, 10, 8)
       # line 22: Bar.baz
       assert_includes refs, bar = ref_for(:Bar, :constant, 22, 0)
       assert_includes refs, ref_for(:baz, :call, 22, 0, bar)

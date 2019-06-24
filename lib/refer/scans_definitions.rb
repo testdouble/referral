@@ -14,7 +14,7 @@ module Refer
         next unless node.is_a?(RubyVM::AbstractSyntaxTree::Node)
 
         if (definition = Value::Definition.from_ast_node(node, parent, file))
-          [definition] + find_tokens(node.children, definition, file)
+          [definition, *find_tokens(node.children, definition, file)]
         else
           find_tokens(node.children, parent, file)
         end
