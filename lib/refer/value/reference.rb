@@ -25,7 +25,7 @@ module Refer
       TYPES = {
         call: NodeType.new(name: :call, ast_type: :CALL),
         constant: NodeType.new(name: :constant, ast_type: :CONST),
-        double_colon: NodeType.new(name: :constant, ast_type: :COLON2),
+        double_colon: NodeType.new(name: :double_colon, ast_type: :COLON2),
       }
 
       def definition?

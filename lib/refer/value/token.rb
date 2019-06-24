@@ -3,25 +3,27 @@ require "digest/sha1"
 module Refer
   module Value
     class Token < Struct.new(
-      :name, :node_type, :parent, :file, :line, :column, keyword_init: true
+      :name, :identifiers, :node_type, :parent, :file, :line, :column,
+      keyword_init: true
     )
 
       def fully_qualified
-        if parent
-          [*parent.fully_qualified, self]
-        else
-          [self]
-        end
+        [
+          *parent&.fully_qualified,
+          *identity_components,
+        ].compact
       end
 
       def full_name
-        fully_qualified.reduce("") { |s, token|
-          if s.empty?
-            token.name
-          else
-            "#{s}#{token.joiner_syntax}#{token.name}"
-          end
-        }
+        join_names(fully_qualified)
+      end
+
+      def literal_name
+        if identifiers.empty?
+          name.to_s
+        else
+          join_names(identifiers)
+        end
       end
 
       def type_name
@@ -30,6 +32,26 @@ module Refer
 
       def id
         Digest::SHA1.hexdigest(Marshal.dump(to_h))[0..6]
+      end
+
+      protected
+
+      def join_names(tokens)
+        tokens.reduce("") { |s, token|
+          if s.empty?
+            token.name.to_s
+          else
+            "#{s}#{token.joiner_syntax}#{token.name}"
+          end
+        }
+      end
+
+      def identity_components
+        if identifiers && !identifiers.empty?
+          identifiers
+        else
+          [self]
+        end
       end
     end
   end
