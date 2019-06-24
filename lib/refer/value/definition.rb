@@ -7,8 +7,6 @@ module Refer
         return unless (type = TYPES.values.find { |d| node.type == d.ast_type })
 
         name = if [:CLASS, :MODULE].include?(node.type)
-          require "pry"
-          binding.pry
           node.children[0].children[1]
         elsif [:CDECL, :DEFN].include?(node.type)
           node.children[0]
