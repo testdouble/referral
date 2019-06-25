@@ -1,4 +1,4 @@
-module Refer
+module Referral
   class PrintsResults
     def call(result, options)
       result.tokens.each do |t|

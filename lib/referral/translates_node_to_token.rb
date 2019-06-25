@@ -1,7 +1,7 @@
-require "refer/token_types"
-require "refer/value/token"
+require "referral/token_types"
+require "referral/value/token"
 
-module Refer
+module Referral
   class TranslatesNodeToToken
     def self.definition(node, parent, file)
       new.call(node, parent, file, :definition)

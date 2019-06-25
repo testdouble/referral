@@ -1,6 +1,6 @@
-require "refer/value/result"
+require "referral/value/result"
 
-module Refer
+module Referral
   class FiltersResults
     FILTER_FUNCTIONS = {
       name: ->(token, opt_val) {

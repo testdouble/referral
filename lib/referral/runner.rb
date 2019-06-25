@@ -1,7 +1,7 @@
-require "refer/scans_tokens"
-require "refer/value/result"
+require "referral/scans_tokens"
+require "referral/value/result"
 
-module Refer
+module Referral
   class Runner
     def call(
       files:

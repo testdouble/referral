@@ -1,7 +1,7 @@
-require "refer/translates_node_to_token"
-require "refer/tokenizes_identifiers"
+require "referral/translates_node_to_token"
+require "referral/tokenizes_identifiers"
 
-module Refer
+module Referral
   class ScansTokens
     def initialize
       @tokenizes_identifiers = TokenizesIdentifiers.new

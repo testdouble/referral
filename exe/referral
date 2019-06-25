@@ -2,6 +2,6 @@
 
 $LOAD_PATH.unshift("#{__dir__}/../lib")
 
-require "refer"
+require "referral"
 
-Refer::Cli.new(ARGV.dup).call
+Referral::Cli.new(ARGV.dup).call

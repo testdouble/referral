@@ -1,9 +1,9 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
-require "refer"
+require "referral"
 
 require "minitest/autorun"
 
-class ReferTest < Minitest::Test
+class ReferralTest < Minitest::Test
   make_my_diffs_pretty!
 
   def pry!(b)

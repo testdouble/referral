@@ -1,10 +1,10 @@
 require "test_helper"
-require "refer/tokenizes_identifiers"
-require "refer/value/token"
-require "refer/token_types"
+require "referral/tokenizes_identifiers"
+require "referral/value/token"
+require "referral/token_types"
 
-module Refer
-  class TokenizesIdentifiersTest < ReferTest
+module Referral
+  class TokenizesIdentifiersTest < ReferralTest
     FILE = "foo.rb"
 
     def subject

@@ -1,39 +1,22 @@
-# Refer
+# referral
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/refer`. To experiment with that code, run `bin/console` for an interactive prompt.
+Find, filter, and sort your codes' references to Ruby identifiers like classes,
+modules, constants, and methods. Powered by Ruby 2.6's
+[RubyVM::AbstractSyntaxTree](https://ruby-doc.org/core-2.6.3/RubyVM/AbstractSyntaxTree.html)
+API.
 
-TODO: Delete this and the text above, and describe your gem
 
-## Installation
+## stick it in a spreadsheet
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'refer'
+```
+referral -d "\t" test/fixture/a/* > foo.tsv && open -a Numbers foo.tsv
 ```
 
-And then execute:
+## Code of Conduct
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install refer
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/searls/refer.
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+This project follows Test Double's [code of
+conduct](https://testdouble.com/code-of-conduct) for all community interactions,
+including (but not limited to) one-on-one communications, public posts/comments,
+code reviews, pull requests, and GitHub issues. If violations occur, Test Double
+will take any action they deem appropriate for the infraction, up to and
+including blocking a user from the organization's repositories.

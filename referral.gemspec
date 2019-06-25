@@ -1,15 +1,15 @@
 lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "refer/version"
+require "referral/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "refer"
-  spec.version       = Refer::VERSION
+  spec.name          = "referral"
+  spec.version       = Referral::VERSION
   spec.authors       = ["Justin Searls"]
   spec.email         = ["searls@gmail.com"]
 
   spec.summary       = "Scan for definitions and references in your Ruby code."
-  spec.homepage      = "https://github.com/testdouble/refer"
+  spec.homepage      = "https://github.com/testdouble/referral"
   spec.license       = "MIT"
 
   spec.metadata["homepage_uri"] = spec.homepage

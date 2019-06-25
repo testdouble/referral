@@ -1,4 +1,4 @@
-module Refer
+module Referral
   module Value
     class NodeType < Struct.new(
       :name,

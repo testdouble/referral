@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    refer (0.1.0)
+    referral (0.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -35,7 +35,7 @@ DEPENDENCIES
   bundler (~> 2.0)
   minitest (~> 5.0)
   rake (~> 12.3)
-  refer!
+  referral!
   standard
 
 BUNDLED WITH

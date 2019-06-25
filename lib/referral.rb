@@ -1,9 +1,9 @@
-require "refer/runner"
+require "referral/runner"
 
-require "refer/version"
-require "refer/cli"
+require "referral/version"
+require "referral/cli"
 
-module Refer
+module Referral
   def self.run(*args, **kwargs, &blk)
     Runner.new.call(*args, **kwargs, &blk)
   end

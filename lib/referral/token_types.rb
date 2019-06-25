@@ -1,6 +1,6 @@
-require "refer/value/node_type"
+require "referral/value/node_type"
 
-module Refer
+module Referral
   TOKEN_TYPES = {
     module: Value::NodeType.new(
       name: :module,

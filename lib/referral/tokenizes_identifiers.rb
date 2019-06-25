@@ -1,6 +1,6 @@
-require "refer/translates_node_to_token"
+require "referral/translates_node_to_token"
 
-module Refer
+module Referral
   class TokenizesIdentifiers
     def call(root_node, root_token)
       find_names(root_node, root_token).tap do |identifiers|

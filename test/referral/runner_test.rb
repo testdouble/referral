@@ -1,7 +1,7 @@
 require "test_helper"
 
-module Refer
-  class RunnerTest < ReferTest
+module Referral
+  class RunnerTest < ReferralTest
     def setup
       @subject = Runner.new
     end

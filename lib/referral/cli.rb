@@ -1,8 +1,8 @@
 require "optparse"
-require "refer/filters_results"
-require "refer/prints_results"
+require "referral/filters_results"
+require "referral/prints_results"
 
-module Refer
+module Referral
   class Cli
     DEFAULT_OPTIONS = {
       delimiter: " ",
@@ -31,7 +31,9 @@ module Refer
       op.banner += " files"
       version!(op)
       help!(op)
-      op.on("-d", "--delimiter [DELIM]", "String separating columns (default: ' ')")
+      op.on("-d", "--delimiter [DELIM]", "String separating columns (default: ' ')") do |v|
+        "\"#{v}\"".undump
+      end
       op.on("-n", "--name [NAME]", "Partial or complete name to filter")
       op.on("--exact-name [NAME]", "Exact fully-qualified name to filter")
       op.on("-p", "--pattern [PATTERN]", Regexp, "Regex pattern to filter")
