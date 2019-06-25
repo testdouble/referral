@@ -133,19 +133,12 @@ module Refer
 
     private
 
+    # reinvented here to avoid indirectly calling the thing under test
     def token_for(node, parent = nil)
       return unless (type = Value::Definition::TYPES.values.find { |d| node.type == d.ast_type })
 
-      name = if [:CLASS, :MODULE].include?(node.type)
-        node.children[0].children[1]
-      elsif [:CDECL, :DEFN].include?(node.type)
-        node.children[0]
-      elsif node.type == :DEFS
-        node.children[1]
-      end
-
       Value::Definition.new(
-        name: name,
+        name: type.name_finder.call(node),
         node_type: type,
         parent: parent,
         file: FILE,

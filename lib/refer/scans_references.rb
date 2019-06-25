@@ -15,7 +15,7 @@ module Refer
 
         children = find_tokens(node.children, file)
         [
-          Value::Reference.from_ast_node(node, children.first, file),
+          TranslatesTokenToNode.reference(node, children.first, file),
           *children,
         ]
       }.compact

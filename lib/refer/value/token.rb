@@ -41,7 +41,7 @@ module Refer
           if s.empty?
             token.name.to_s
           else
-            "#{s}#{token.joiner_syntax}#{token.name}"
+            "#{s}#{token.node_type.join_separator}#{token.name}"
           end
         }
       end

@@ -13,7 +13,7 @@ module Refer
       nodes.flat_map { |node|
         next unless node.is_a?(RubyVM::AbstractSyntaxTree::Node)
 
-        if (definition = Value::Definition.from_ast_node(node, parent, file))
+        if (definition = TranslatesTokenToNode.definition(node, parent, file))
           [definition, *find_tokens(node.children, definition, file)]
         else
           find_tokens(node.children, parent, file)
