@@ -8,14 +8,14 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        a_1.rb:1:0: A module
-        a_1.rb:2:0: A::Car class
-        a_1.rb:3:2: A::Car::THINGS constant_declaration
-        a_1.rb:4:2: A::Car#vroom! instance_method
-        a_1.rb:8:0: A::B module
-        a_2.rb:3:6: A::Car.new call
-        a_2.rb:5:5: A::Car::THINGS constant
-        a_2.rb:7:0: vroom! call
+        a_1.rb:1:0: module A
+        a_1.rb:2:0: class A::Car
+        a_1.rb:3:2: constant_declaration A::Car::THINGS
+        a_1.rb:4:2: instance_method A::Car#vroom!
+        a_1.rb:8:0: module A::B
+        a_2.rb:3:6: call A::Car.new
+        a_2.rb:5:5: constant A::Car::THINGS
+        a_2.rb:7:0: call vroom!
       RUBY
     end
 
@@ -25,8 +25,8 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        a_1.rb:4:2:	A::Car#vroom!	instance_method
-        a_2.rb:7:0:	vroom!	call
+        a_1.rb:4:2:	instance_method	A::Car#vroom!
+        a_2.rb:7:0:	call	vroom!
       RUBY
     end
 
@@ -36,11 +36,11 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        a_1.rb:2:0: A::Car class
-        a_1.rb:3:2: A::Car::THINGS constant_declaration
-        a_1.rb:4:2: A::Car#vroom! instance_method
-        a_2.rb:3:6: A::Car.new call
-        a_2.rb:5:5: A::Car::THINGS constant
+        a_1.rb:2:0: class A::Car
+        a_1.rb:3:2: constant_declaration A::Car::THINGS
+        a_1.rb:4:2: instance_method A::Car#vroom!
+        a_2.rb:3:6: call A::Car.new
+        a_2.rb:5:5: constant A::Car::THINGS
       RUBY
     end
 
@@ -50,10 +50,10 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        a_1.rb:3:2: A::Car::THINGS constant_declaration
-        a_1.rb:4:2: A::Car#vroom! instance_method
-        a_2.rb:5:5: A::Car::THINGS constant
-        a_2.rb:7:0: vroom! call
+        a_1.rb:3:2: constant_declaration A::Car::THINGS
+        a_1.rb:4:2: instance_method A::Car#vroom!
+        a_2.rb:5:5: constant A::Car::THINGS
+        a_2.rb:7:0: call vroom!
       RUBY
     end
 
@@ -63,11 +63,11 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        a_1.rb:2:0: A::Car class
-        a_1.rb:3:2: A::Car::THINGS constant_declaration
-        a_1.rb:4:2: A::Car#vroom! instance_method
-        a_2.rb:3:6: A::Car.new call
-        a_2.rb:5:5: A::Car::THINGS constant
+        a_1.rb:2:0: class A::Car
+        a_1.rb:3:2: constant_declaration A::Car::THINGS
+        a_1.rb:4:2: instance_method A::Car#vroom!
+        a_2.rb:3:6: call A::Car.new
+        a_2.rb:5:5: constant A::Car::THINGS
       RUBY
     end
 
@@ -77,11 +77,11 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        a_1.rb:2:0: A::Car class
-        a_1.rb:3:2: A::Car::THINGS constant_declaration
-        a_1.rb:4:2: A::Car#vroom! instance_method
-        a_2.rb:3:6: A::Car.new call
-        a_2.rb:5:5: A::Car::THINGS constant
+        a_1.rb:2:0: class A::Car
+        a_1.rb:3:2: constant_declaration A::Car::THINGS
+        a_1.rb:4:2: instance_method A::Car#vroom!
+        a_2.rb:3:6: call A::Car.new
+        a_2.rb:5:5: constant A::Car::THINGS
       RUBY
     end
 
@@ -91,8 +91,8 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        a_1.rb:3:2: A::Car::THINGS constant_declaration
-        a_2.rb:5:5: A::Car::THINGS constant
+        a_1.rb:3:2: constant_declaration A::Car::THINGS
+        a_2.rb:5:5: constant A::Car::THINGS
       RUBY
     end
 
@@ -102,7 +102,7 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        a_1.rb:2:0: A::Car class
+        a_1.rb:2:0: class A::Car
       RUBY
     end
 
@@ -112,8 +112,8 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        a_1.rb:2:0: A::Car class
-        a_1.rb:4:2: A::Car#vroom! instance_method
+        a_1.rb:2:0: class A::Car
+        a_1.rb:4:2: instance_method A::Car#vroom!
       RUBY
     end
 
@@ -123,8 +123,8 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        a_1.rb:4:2: A::Car#vroom! instance_method
-        a_2.rb:7:0: vroom! call
+        a_1.rb:4:2: instance_method A::Car#vroom!
+        a_2.rb:7:0: call vroom!
       RUBY
     end
 
@@ -134,8 +134,8 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        a_1.rb:3:2: A::Car::THINGS constant_declaration
-        a_2.rb:5:5: A::Car::THINGS constant
+        a_1.rb:3:2: constant_declaration A::Car::THINGS
+        a_2.rb:5:5: constant A::Car::THINGS
       RUBY
     end
 
@@ -153,11 +153,11 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        2.rb:1:5: + call
-        2.rb:3:5: * call
-        2.rb:5:5: - call
-        2.rb:9:5: [] call
-        2.rb:11:5: =~ call
+        2.rb:1:5: call +
+        2.rb:3:5: call *
+        2.rb:5:5: call -
+        2.rb:9:5: call []
+        2.rb:11:5: call =~
       RUBY
     end
   end

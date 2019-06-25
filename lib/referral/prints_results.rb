@@ -5,8 +5,8 @@ module Referral
         next if t.hidden?
         line_components = [
           "#{t.file}:#{t.line}:#{t.column}:",
-          t.full_name.to_s,
           t.type_name.to_s,
+          t.full_name.to_s,
         ]
         puts line_components.join(options[:delimiter])
       end
