@@ -9,9 +9,7 @@ module Refer
     def test_fixture_1
       @file = "test/fixture/1.rb"
 
-      result = @subject.call(
-        file_pattern: "test/fixture/1.r*"
-      )
+      result = @subject.call(files: [@file])
 
       defs = result.definitions
       defs.each { |d| d.identifiers = nil } # <- not ideal but makes assert hard

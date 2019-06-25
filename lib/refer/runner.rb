@@ -8,16 +8,16 @@ module Refer
     end
 
     def call(
-      file_pattern: "**/*.rb"
+      files:
       # scan_load_path_for_definitions: false,
       # require_strategies: []
     )
       Value::Result.new(
         definitions: ScansDefinitions.new.call(
-          file_pattern: file_pattern
+          files: files
         ),
         references: ScansReferences.new.call(
-          file_pattern: file_pattern
+          files: files
         ),
       )
     end

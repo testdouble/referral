@@ -1,12 +1,18 @@
+require "optparse"
+
 module Refer
   class Cli
     def initialize(argv)
-      @file_pattern = argv[0] || "**/*.rb"
+      @options = {}
+      OptionParser.new { |opts|
+        # TODO: have options
+      }.parse!(argv, into: @options)
+      @files = argv.empty? ? Dir["**/*.rb"] : argv
     end
 
     def call
       result = Runner.new.call(
-        file_pattern: @file_pattern
+        files: @files
       )
 
       (result.definitions + result.references).each do |d|

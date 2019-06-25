@@ -1,4 +1,5 @@
 require "refer/translates_node_to_token"
+require "refer/tokenizes_identifiers"
 
 module Refer
   class ScansDefinitions
@@ -6,11 +7,11 @@ module Refer
       @tokenizes_identifiers = TokenizesIdentifiers.new
     end
 
-    def call(file_pattern:, &blk)
-      Dir[file_pattern].flat_map { |file|
+    def call(files:, &blk)
+      files.flat_map do |file|
         root = RubyVM::AbstractSyntaxTree.parse_file(file)
         find_tokens([root], nil, file)
-      }
+      end
     end
 
     private

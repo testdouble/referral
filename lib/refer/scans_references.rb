@@ -2,8 +2,8 @@ require "refer/translates_node_to_token"
 
 module Refer
   class ScansReferences
-    def call(file_pattern:, &blk)
-      Dir[file_pattern].flat_map { |file|
+    def call(files:, &blk)
+      files.flat_map { |file|
         root = RubyVM::AbstractSyntaxTree.parse_file(file)
         find_tokens([root], file)
       }
