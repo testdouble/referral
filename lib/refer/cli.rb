@@ -31,8 +31,10 @@ module Refer
       op.banner += " files"
       version!(op)
       help!(op)
-      op.on("-d", "--delimiter [DELIM]", "String separating column (default: ' ')")
-      op.on("-n", "--name [NAME]", Regexp, "Name or pattern to filter results by")
+      op.on("-d", "--delimiter [DELIM]", "String separating columns (default: ' ')")
+      op.on("-n", "--name [NAME]", "Partial or complete name to filter")
+      op.on("--exact-name [NAME]", "Exact fully-qualified name to filter")
+      op.on("-p", "--pattern [PATTERN]", Regexp, "Regex pattern to filter")
       op.parse!(argv, into: into)
     end
 
