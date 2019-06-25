@@ -1,3 +1,5 @@
+require "refer/translates_node_to_token"
+
 module Refer
   class ScansDefinitions
     def call(file_pattern:, &blk)
@@ -13,7 +15,7 @@ module Refer
       nodes.flat_map { |node|
         next unless node.is_a?(RubyVM::AbstractSyntaxTree::Node)
 
-        if (definition = TranslatesTokenToNode.definition(node, parent, file))
+        if (definition = TranslatesNodeToToken.definition(node, parent, file))
           [definition, *find_tokens(node.children, definition, file)]
         else
           find_tokens(node.children, parent, file)

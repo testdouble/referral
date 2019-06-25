@@ -1,17 +1,22 @@
+require "refer/token_types"
+require "refer/value/token"
+
 module Refer
-  class TranslatesTokenToNode
+  class TranslatesNodeToToken
     def self.definition(node, parent, file)
-      new.call(node, parent, file, Value::Definition, Value::Definition::TYPES)
+      new.call(node, parent, file, :definition)
     end
 
     def self.reference(node, parent, file)
-      new.call(node, parent, file, Value::Reference, Value::Reference::TYPES)
+      new.call(node, parent, file, :reference)
     end
 
-    def call(node, parent, file, token_type, node_types)
-      return unless (type = node_types.values.find { |d| node.type == d.ast_type })
+    def call(node, parent, file, token_type)
+      return unless (type = TOKEN_TYPES.values.find { |d|
+                       d.token_type == token_type && node.type == d.ast_type
+                     })
 
-      token_type.new(
+      Value::Token.new(
         name: type.name_finder.call(node),
         node_type: type,
         parent: parent,

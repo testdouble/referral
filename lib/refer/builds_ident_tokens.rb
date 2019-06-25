@@ -1,4 +1,4 @@
-require "refer/value/reference"
+require "refer/translates_node_to_token"
 
 module Refer
   class BuildsIdentTokens
@@ -15,7 +15,7 @@ module Refer
 
       [
         *find_names(node.children[0], parent),
-        TranslatesTokenToNode.reference(node, parent, parent.file),
+        TranslatesNodeToToken.reference(node, parent, parent.file),
       ].compact
     end
   end

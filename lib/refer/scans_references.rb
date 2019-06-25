@@ -1,3 +1,5 @@
+require "refer/translates_node_to_token"
+
 module Refer
   class ScansReferences
     def call(file_pattern:, &blk)
@@ -15,7 +17,7 @@ module Refer
 
         children = find_tokens(node.children, file)
         [
-          TranslatesTokenToNode.reference(node, children.first, file),
+          TranslatesNodeToToken.reference(node, children.first, file),
           *children,
         ]
       }.compact

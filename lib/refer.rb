@@ -1,6 +1,3 @@
-require "refer/value/node_type"
-require "refer/value/definition"
-require "refer/value/reference"
 require "refer/value/result"
 
 require "refer/scans_definitions"

@@ -1,6 +1,7 @@
 require "test_helper"
 require "refer/builds_ident_tokens"
-require "refer/value/definition"
+require "refer/value/token"
+require "refer/token_types"
 
 module Refer
   class BuildsIdentTokensTest < ReferTest
@@ -21,9 +22,9 @@ module Refer
       result = subject.call(root_node, root_token)
 
       assert_equal 1, result.size
-      assert_equal Value::Reference.new(
+      assert_equal Value::Token.new(
         name: :Neet,
-        node_type: Value::Reference::TYPES[:double_colon],
+        node_type: TOKEN_TYPES[:double_colon],
         parent: root_token,
         file: FILE,
         line: 1,
@@ -46,17 +47,17 @@ module Refer
       result = subject.call(root_node, root_token)
 
       assert_equal 2, result.size
-      assert_equal Value::Reference.new(
+      assert_equal Value::Token.new(
         name: :Super,
-        node_type: Value::Reference::TYPES[:constant],
+        node_type: TOKEN_TYPES[:constant_ref],
         parent: root_token,
         file: FILE,
         line: 1,
         column: 7
       ), result[0]
-      assert_equal Value::Reference.new(
+      assert_equal Value::Token.new(
         name: :Neet,
-        node_type: Value::Reference::TYPES[:double_colon],
+        node_type: TOKEN_TYPES[:double_colon],
         parent: root_token,
         file: FILE,
         line: 1,
@@ -84,25 +85,25 @@ module Refer
       result = subject.call(root_node, root_token)
 
       assert_equal 3, result.size
-      assert_equal Value::Reference.new(
+      assert_equal Value::Token.new(
         name: :Super,
-        node_type: Value::Reference::TYPES[:constant],
+        node_type: TOKEN_TYPES[:constant_ref],
         parent: root_token,
         file: FILE,
         line: 2,
         column: 9
       ), result[0]
-      assert_equal Value::Reference.new(
+      assert_equal Value::Token.new(
         name: :Duper,
-        node_type: Value::Reference::TYPES[:double_colon],
+        node_type: TOKEN_TYPES[:double_colon],
         parent: root_token,
         file: FILE,
         line: 2,
         column: 9
       ), result[1]
-      assert_equal Value::Reference.new(
+      assert_equal Value::Token.new(
         name: :Neet,
-        node_type: Value::Reference::TYPES[:double_colon],
+        node_type: TOKEN_TYPES[:double_colon],
         parent: root_token,
         file: FILE,
         line: 2,
@@ -135,9 +136,11 @@ module Refer
 
     # reinvented here to avoid indirectly calling the thing under test
     def token_for(node, parent = nil)
-      return unless (type = Value::Definition::TYPES.values.find { |d| node.type == d.ast_type })
+      return unless (type = TOKEN_TYPES.values.find { |d|
+                       d.token_type == :definition && node.type == d.ast_type
+                     })
 
-      Value::Definition.new(
+      Value::Token.new(
         name: type.name_finder.call(node),
         node_type: type,
         parent: parent,
