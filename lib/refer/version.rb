@@ -1,3 +1,3 @@
 module Refer
-  VERSION = "0.1.0"
+  VERSION = Gem::Version.new("0.0.1")
 end
