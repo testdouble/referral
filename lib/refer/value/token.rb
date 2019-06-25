@@ -31,7 +31,11 @@ module Refer
       end
 
       def id
-        Digest::SHA1.hexdigest(to_h.inspect)[0..6]
+        Digest::SHA1.hexdigest(to_h.merge(
+          parent: nil,
+          identifiers: identifiers&.map(&:id),
+          node_type: node_type.name
+        ).inspect)[0..6]
       end
 
       def hidden?
