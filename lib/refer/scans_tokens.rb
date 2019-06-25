@@ -22,11 +22,11 @@ module Refer
 
         if (definition = TranslatesNodeToToken.definition(node, parent, file))
           @tokenizes_identifiers.call(node, definition)
-          [definition, *find_tokens(node.children, definition, file)]
+          [definition, *find_tokens(node.children[1..-1], definition, file)]
         else
           children = find_tokens(node.children, parent, file)
-
           if (reference = TranslatesNodeToToken.reference(node, children.first, file))
+            children.each(&:hide!)
             [reference, *children]
           else
             children

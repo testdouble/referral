@@ -16,6 +16,7 @@ module Refer
       )
 
       result.tokens.each do |d|
+        next if d.hidden?
         puts "#{d.file}:#{d.line}:#{d.column}: #{d.full_name} (#{d.type_name})"
       end
 

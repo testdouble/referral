@@ -3,7 +3,7 @@ require "digest/sha1"
 module Refer
   module Value
     class Token < Struct.new(
-      :name, :identifiers, :node_type, :parent, :file, :line, :column,
+      :name, :identifiers, :node_type, :parent, :file, :line, :column, :hidden,
       keyword_init: true
     )
 
@@ -31,7 +31,15 @@ module Refer
       end
 
       def id
-        Digest::SHA1.hexdigest(Marshal.dump(to_h))[0..6]
+        Digest::SHA1.hexdigest(to_h.inspect)[0..6]
+      end
+
+      def hidden?
+        hidden
+      end
+
+      def hide!
+        self.hidden = true
       end
 
       protected
