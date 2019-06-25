@@ -3,8 +3,10 @@ require "optparse"
 module Referral
   class ParsesOptions
     DEFAULT_OPTIONS = {
+      columns: ["location", "type", "full_name"],
       delimiter: " ",
       "include-unnamed": false,
+      "print-headers": false,
     }.freeze
 
     def call(argv)
@@ -13,13 +15,15 @@ module Referral
         op.banner += " files"
         version!(op)
         help!(op)
+        op.on("-n", "--name [NAME]", Array, "Partial or complete name to filter")
+        op.on("--exact-name [NAME]", Array, "Exact name to filter")
+        op.on("--full-name [NAME]", Array, "Exact, fully-qualified name to filter")
+        op.on("-p", "--pattern [PATTERN]", Regexp, "Regex pattern to filter")
+        op.on("-c", "--columns [NAME]", Array, "Columns to print (default: location,type,full_name)")
         op.on("-d", "--delimiter [DELIM]", "String separating columns (default: ' ')") do |v|
           "\"#{v}\"".undump
         end
-        op.on("-n", "--name [NAME]", Array, "Partial or complete name to filter (supports,multiple)")
-        op.on("--exact-name [NAME]", Array, "Exact name to filter(supports,multiple)")
-        op.on("--full-name [NAME]", Array, "Exact, fully-qualified name to filter(supports,multiple)")
-        op.on("-p", "--pattern [PATTERN]", Regexp, "Regex pattern to filter")
+        op.on("--print-headers", TrueClass, "Print header names (default: false)")
         op.on("--include-unnamed", TrueClass, "Include reference without identifiers (default: false)")
         op.parse!(argv, into: options)
       end

@@ -160,5 +160,33 @@ module Referral
         2.rb:11:5: call =~
       RUBY
     end
+
+    def test_print_headers_pipe_delimited
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture/a") {
+        Cli.new(%w[--print-headers -d | --full-name A::Car]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        location|type|full_name
+        a_1.rb:2:0:|class|A::Car
+      RUBY
+    end
+
+    def test_custom_column_ordering
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture/a") {
+        Cli.new(%w[-c name,type]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        A module
+        Car class
+        THINGS constant_declaration
+        vroom! instance_method
+        B module
+        new call
+        THINGS constant
+        vroom! call
+      RUBY
+    end
   end
 end

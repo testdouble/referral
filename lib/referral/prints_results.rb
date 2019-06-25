@@ -1,26 +1,35 @@
 module Referral
   COLUMNS = {
-    location: ->(t) {
-      "#{t.file}:#{t.line}:#{t.column}:"
+    location: ->(token) {
+      "#{token.file}:#{token.line}:#{token.column}:"
     },
-    type_name: ->(t) {
-      t.type_name.to_s
+    type: ->(token) {
+      token.type_name.to_s
     },
-    full_name: ->(t) {
-      t.full_name.to_s
+    name: ->(token) {
+      token.name.to_s
+    },
+    full_name: ->(token) {
+      token.full_name.to_s
     },
   }
 
   class PrintsResults
     def call(result, options)
-      result.tokens.each do |t|
-        next if t.hidden?
-        line_components = [
-          COLUMNS[:location].call(t),
-          COLUMNS[:type_name].call(t),
-          COLUMNS[:full_name].call(t),
-        ]
-        puts line_components.join(options[:delimiter])
+      if options[:"print-headers"]
+        puts options[:columns].join(options[:delimiter])
+      end
+
+      result.tokens.each do |token|
+        next if token.hidden?
+        cells = options[:columns].map { |column_name|
+          if (column = COLUMNS[column_name.to_sym])
+            column.call(token)
+          else
+            raise "Column '#{column_name}' not found in Referral::COLUMNS"
+          end
+        }
+        puts cells.join(options[:delimiter])
       end
     end
   end
