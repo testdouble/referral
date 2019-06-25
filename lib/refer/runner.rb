@@ -1,3 +1,7 @@
+require "refer/scans_definitions"
+require "refer/scans_references"
+require "refer/value/result"
+
 module Refer
   class Runner
     def initialize

@@ -1,7 +1,3 @@
-require "refer/value/result"
-
-require "refer/scans_definitions"
-require "refer/scans_references"
 require "refer/runner"
 
 require "refer/version"

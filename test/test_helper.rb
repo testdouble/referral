@@ -4,6 +4,8 @@ require "refer"
 require "minitest/autorun"
 
 class ReferTest < Minitest::Test
+  make_my_diffs_pretty!
+
   def pry!(b)
     require "pry"
     b.pry

@@ -11,7 +11,7 @@ module Refer
       @subject ||= BuildsIdentTokens.new
     end
 
-    def test_naked_module
+    def test_naked_module_def
       node = RubyVM::AbstractSyntaxTree.parse <<~RUBY
         module Neet
         end
@@ -36,7 +36,7 @@ module Refer
       assert_equal "Neet", root_token.full_name
     end
 
-    def test_nested_module
+    def test_nested_module_def
       node = RubyVM::AbstractSyntaxTree.parse <<~RUBY
         module Super::Neet
         end
@@ -69,7 +69,7 @@ module Refer
       assert_equal "Super::Neet", root_token.full_name
     end
 
-    def test_2_deep_nested_module
+    def test_2_deep_nested_module_def
       node = RubyVM::AbstractSyntaxTree.parse <<~RUBY
         module Really::Quite
           module Super::Duper::Neet
@@ -115,9 +115,92 @@ module Refer
       assert_equal "Really::Quite::Super::Duper::Neet", root_token.full_name
     end
 
-    def test_instance_method
+    def test_2_deep_nested_class_def
       node = RubyVM::AbstractSyntaxTree.parse <<~RUBY
-        def foo
+        class Really::Quite
+          class Super::Duper::Neet
+          end
+        end
+      RUBY
+      quite_node = node.children.last
+      quite_token = token_for(quite_node)
+      subject.call(quite_node, quite_token) # for the side effect…
+      root_node = quite_node.children.last.children.last.children.last
+      root_token = token_for(root_node, quite_token)
+
+      result = subject.call(root_node, root_token)
+
+      assert_equal 3, result.size
+      assert_equal Value::Token.new(
+        name: :Super,
+        node_type: TOKEN_TYPES[:constant_ref],
+        parent: root_token,
+        file: FILE,
+        line: 2,
+        column: 8
+      ), result[0]
+      assert_equal Value::Token.new(
+        name: :Duper,
+        node_type: TOKEN_TYPES[:double_colon],
+        parent: root_token,
+        file: FILE,
+        line: 2,
+        column: 8
+      ), result[1]
+      assert_equal Value::Token.new(
+        name: :Neet,
+        node_type: TOKEN_TYPES[:double_colon],
+        parent: root_token,
+        file: FILE,
+        line: 2,
+        column: 8
+      ), result[2]
+      assert_equal result, root_token.identifiers
+      assert_equal :Neet, root_token.name
+      assert_equal "Super::Duper::Neet", root_token.literal_name
+      assert_equal "Really::Quite::Super::Duper::Neet", root_token.full_name
+    end
+
+    def test_constant_def
+      node = RubyVM::AbstractSyntaxTree.parse <<~RUBY
+        Foo::Bar::BAZ = "Stuff"
+      RUBY
+      root_node = node.children.last
+      root_token = token_for(root_node)
+
+      result = subject.call(root_node, root_token)
+
+      assert_equal 3, result.size
+      assert_equal Value::Token.new(
+        name: :Foo,
+        node_type: TOKEN_TYPES[:constant_ref],
+        parent: root_token,
+        file: FILE,
+        line: 1,
+        column: 0
+      ), result[0]
+      assert_equal Value::Token.new(
+        name: :Bar,
+        node_type: TOKEN_TYPES[:double_colon],
+        parent: root_token,
+        file: FILE,
+        line: 1,
+        column: 0
+      ), result[1]
+      assert_equal Value::Token.new(
+        name: :BAZ,
+        node_type: TOKEN_TYPES[:double_colon],
+        parent: root_token,
+        file: FILE,
+        line: 1,
+        column: 0
+      ), result[2]
+      assert_equal result, root_token.identifiers
+    end
+
+    def test_instance_method_def
+      node = RubyVM::AbstractSyntaxTree.parse <<~RUBY
+        def foo(c)
         end
       RUBY
       root_node = node.children.last
@@ -130,6 +213,23 @@ module Refer
       assert_equal :foo, root_token.name
       assert_equal "foo", root_token.literal_name
       assert_equal "foo", root_token.full_name
+    end
+
+    def test_class_method_def
+      node = RubyVM::AbstractSyntaxTree.parse <<~RUBY
+        def self.bar(a, b)
+        end
+      RUBY
+      root_node = node.children.last
+      root_token = token_for(root_node)
+
+      result = subject.call(root_node, root_token)
+
+      assert_equal 0, result.size
+      assert_equal result, root_token.identifiers
+      assert_equal :bar, root_token.name
+      assert_equal "bar", root_token.literal_name
+      assert_equal "bar", root_token.full_name
     end
 
     private
