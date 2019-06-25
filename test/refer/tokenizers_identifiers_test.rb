@@ -1,14 +1,14 @@
 require "test_helper"
-require "refer/builds_ident_tokens"
+require "refer/tokenizes_identifiers"
 require "refer/value/token"
 require "refer/token_types"
 
 module Refer
-  class BuildsIdentTokensTest < ReferTest
+  class TokenizesIdentifiersTest < ReferTest
     FILE = "foo.rb"
 
     def subject
-      @subject ||= BuildsIdentTokens.new
+      @subject ||= TokenizesIdentifiers.new
     end
 
     def test_naked_module_def

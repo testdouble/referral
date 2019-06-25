@@ -1,7 +1,7 @@
 require "refer/translates_node_to_token"
 
 module Refer
-  class BuildsIdentTokens
+  class TokenizesIdentifiers
     def call(root_node, root_token)
       find_names(root_node, root_token).tap do |identifiers|
         root_token.identifiers = identifiers # eww gross mutation
