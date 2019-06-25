@@ -1,4 +1,6 @@
 require "optparse"
+require "refer/filters_results"
+require "refer/prints_results"
 
 module Refer
   class Cli
@@ -13,21 +15,13 @@ module Refer
     end
 
     def call
-      result = Runner.new.call(
-        files: @files
+      PrintsResults.new.call(
+        FiltersResults.new.call(
+          Runner.new.call(files: @files),
+          @options
+        ),
+        @options
       )
-
-      result.tokens.each do |t|
-        next if t.hidden?
-        line_components = [
-          "#{t.file}:#{t.line}:#{t.column}:",
-          t.full_name.to_s,
-          "(#{t.type_name})",
-        ]
-        puts line_components.join(@options[:delimiter])
-      end
-
-      0
     end
 
     private
@@ -37,8 +31,8 @@ module Refer
       op.banner += " files"
       version!(op)
       help!(op)
-      op.on("-d", "--delimiter [DELIM]", "String separating each column (default ' ')")
-      op.on("-n", "--name [NAME]", "Name or regex pattern ")
+      op.on("-d", "--delimiter [DELIM]", "String separating column (default: ' ')")
+      op.on("-n", "--name [NAME]", Regexp, "Name or pattern to filter results by")
       op.parse!(argv, into: into)
     end
 
