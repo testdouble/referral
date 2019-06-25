@@ -8,19 +8,23 @@ class Refer::CliTest < ReferTest
     assert_equal 0, exit_code
     assert_empty fake_err.string
     assert_equal <<~RUBY, fake_out.string
-      a_1.rb:1:0: def: A (module)
-      a_1.rb:2:0: def: A::Car (class)
-      a_1.rb:3:2: def: A::Car#vroom! (instance_method)
-      a_1.rb:7:0: def: A::B (module)
-      a_2.rb:3:6: ref: A::Car.new (call)
-      a_2.rb:3:6: ref: A::Car (double_colon)
-      a_2.rb:3:6: ref: A (constant)
-      a_2.rb:5:0: ref: vroom! (call)
-      a_1.rb:1:7: ref: A (double_colon)
-      a_1.rb:2:6: ref: A::Car (double_colon)
-      a_1.rb:2:6: ref: A (constant)
-      a_1.rb:7:7: ref: A::B (double_colon)
-      a_1.rb:7:7: ref: A (constant)
+      a_1.rb:1:0: A (module)
+      a_1.rb:2:0: A::Car (class)
+      a_1.rb:3:2: A::Car::THINGS (constant_declaration)
+      a_1.rb:4:2: A::Car#vroom! (instance_method)
+      a_1.rb:8:0: A::B (module)
+      a_2.rb:3:6: A::Car.new (call)
+      a_2.rb:3:6: A::Car (constant_reference)
+      a_2.rb:3:6: A (constant_reference)
+      a_2.rb:5:5: A::Car::THINGS (constant_reference)
+      a_2.rb:5:5: A::Car (constant_reference)
+      a_2.rb:5:5: A (constant_reference)
+      a_2.rb:7:0: vroom! (call)
+      a_1.rb:1:7: A (constant_reference)
+      a_1.rb:2:6: A::Car (constant_reference)
+      a_1.rb:2:6: A (constant_reference)
+      a_1.rb:8:7: A::B (constant_reference)
+      a_1.rb:8:7: A (constant_reference)
     RUBY
   end
 end

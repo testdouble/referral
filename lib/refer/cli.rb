@@ -9,11 +9,8 @@ module Refer
         file_pattern: @file_pattern
       )
 
-      result.definitions.each do |d|
-        puts "#{d.file}:#{d.line}:#{d.column}: def: #{d.full_name} (#{d.type_name})"
-      end
-      result.references.each do |d|
-        puts "#{d.file}:#{d.line}:#{d.column}: ref: #{d.full_name} (#{d.type_name})"
+      (result.definitions + result.references).each do |d|
+        puts "#{d.file}:#{d.line}:#{d.column}: #{d.full_name} (#{d.type_name})"
       end
 
       0
