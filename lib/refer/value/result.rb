@@ -1,6 +1,6 @@
 module Refer
   module Value
-    class Result < Struct.new(:definitions, :references, keyword_init: true)
+    class Result < Struct.new(:tokens, keyword_init: true)
     end
   end
 end

@@ -15,7 +15,7 @@ module Refer
         files: @files
       )
 
-      (result.definitions + result.references).each do |d|
+      result.tokens.each do |d|
         puts "#{d.file}:#{d.line}:#{d.column}: #{d.full_name} (#{d.type_name})"
       end
 

@@ -2,7 +2,7 @@ require "refer/translates_node_to_token"
 require "refer/tokenizes_identifiers"
 
 module Refer
-  class ScansDefinitions
+  class ScansTokens
     def initialize
       @tokenizes_identifiers = TokenizesIdentifiers.new
     end
@@ -24,7 +24,13 @@ module Refer
           @tokenizes_identifiers.call(node, definition)
           [definition, *find_tokens(node.children, definition, file)]
         else
-          find_tokens(node.children, parent, file)
+          children = find_tokens(node.children, parent, file)
+
+          if (reference = TranslatesNodeToToken.reference(node, children.first, file))
+            [reference, *children]
+          else
+            children
+          end
         end
       }.compact
     end
