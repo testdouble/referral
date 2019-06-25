@@ -12,6 +12,13 @@ module Referral
       pattern: ->(token, opt_val) {
         opt_val.match(token.full_name)
       },
+      "include-unnamed": ->(token, opt_val) {
+        if !opt_val
+          /\w/ =~ token.full_name
+        else
+          true
+        end
+      },
     }
     def call(result, options)
       filters = options.select { |(opt_name, _)|

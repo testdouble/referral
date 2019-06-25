@@ -9,7 +9,7 @@ API.
 ## stick it in a spreadsheet
 
 ```
-referral -d "\t" test/fixture/a/* > foo.tsv && open -a Numbers foo.tsv
+referral -d "\t" > foo.tsv && open -a Numbers foo.tsv
 ```
 
 ## Code of Conduct

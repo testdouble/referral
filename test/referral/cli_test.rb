@@ -78,5 +78,27 @@ module Referral
         a_2.rb:5:5: A::Car::THINGS (constant)
       RUBY
     end
+
+    def test_default_exclude_unnamed
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[2.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_empty fake_out.string
+    end
+
+    def test_include_unnamed
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--include-unnamed 2.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        2.rb:1:5: + (call)
+        2.rb:3:5: * (call)
+        2.rb:5:5: - (call)
+        2.rb:9:5: [] (call)
+        2.rb:11:5: =~ (call)
+      RUBY
+    end
   end
 end
