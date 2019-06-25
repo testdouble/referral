@@ -14,6 +14,7 @@ module Refer
       )
 
       defs = result.definitions
+      defs.each { |d| d.identifiers = nil } # <- not ideal but makes assert hard
       assert_includes defs, bar = token_for(:Bar, :module, 2, 0)
       assert_includes defs, token_for(:STUFFS, :constant_def, 3, 2, bar)
       assert_includes defs, token_for(:baz, :class_method, 4, 2, bar)
