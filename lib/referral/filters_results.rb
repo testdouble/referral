@@ -1,13 +1,21 @@
+require "referral/matches_token_names"
 require "referral/value/result"
 
 module Referral
   class FiltersResults
     FILTER_FUNCTIONS = {
-      name: ->(token, opt_val) {
-        token.full_name.include?(opt_val)
+      name: ->(token, names) {
+        names.any? { |name| token.full_name.include?(name) }
       },
-      "exact-name": ->(token, opt_val) {
-        opt_val == token.full_name
+      "exact-name": ->(token, exact_names) {
+        exact_names.any? { |query|
+          MatchesTokenNames.subset(token, query)
+        }
+      },
+      "full-name": ->(token, exact_names) {
+        exact_names.any? { |query|
+          MatchesTokenNames.entirely(token, query)
+        }
       },
       pattern: ->(token, opt_val) {
         opt_val.match(token.full_name)
