@@ -13,9 +13,29 @@ module Referral
         a_1.rb:3:2: constant_declaration A::Car::THINGS
         a_1.rb:4:2: instance_method A::Car#vroom!
         a_1.rb:8:0: module A::B
+        a_2.rb:3:0: local_var_assign car
         a_2.rb:3:6: call A::Car.new
         a_2.rb:5:5: constant A::Car::THINGS
-        a_2.rb:7:0: call vroom!
+        a_2.rb:7:0: call car.vroom!
+      RUBY
+    end
+
+    def test_variables
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[3.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        3.rb:1:0: class Neat
+        3.rb:2:2: instance_method Neat#cool
+        3.rb:3:4: local_var_assign Neat#cool->foo
+        3.rb:5:4: instance_var_assign Neat#cool->@bar
+        3.rb:7:4: class_var_assign Neat#cool->@@baz
+        3.rb:9:4: global_var_assign Neat#cool->$qux
+        3.rb:11:12: local_var foo
+        3.rb:11:19: instance_var @bar
+        3.rb:11:27: class_var @@baz
+        3.rb:11:36: global_var $qux
       RUBY
     end
 
@@ -26,7 +46,7 @@ module Referral
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
         a_1.rb:4:2:	instance_method	A::Car#vroom!
-        a_2.rb:7:0:	call	vroom!
+        a_2.rb:7:0:	call	car.vroom!
       RUBY
     end
 
@@ -53,7 +73,7 @@ module Referral
         a_1.rb:3:2: constant_declaration A::Car::THINGS
         a_1.rb:4:2: instance_method A::Car#vroom!
         a_2.rb:5:5: constant A::Car::THINGS
-        a_2.rb:7:0: call vroom!
+        a_2.rb:7:0: call car.vroom!
       RUBY
     end
 
@@ -124,7 +144,7 @@ module Referral
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
         a_1.rb:4:2: instance_method A::Car#vroom!
-        a_2.rb:7:0: call vroom!
+        a_2.rb:7:0: call car.vroom!
       RUBY
     end
 
@@ -144,7 +164,17 @@ module Referral
         Cli.new(%w[2.rb]).call
       }
       assert_empty fake_err.string
-      assert_empty fake_out.string
+      assert_equal <<~RUBY, fake_out.string
+        2.rb:1:5: call zap.+
+        2.rb:1:5: local_var_assign zap
+        2.rb:3:5: local_var_assign zip
+        2.rb:3:5: call zip.*
+        2.rb:5:5: call zoop.-
+        2.rb:5:5: local_var_assign zoop
+        2.rb:7:8: local_var zip
+        2.rb:7:15: local_var zap
+        2.rb:7:22: local_var zoop
+      RUBY
     end
 
     def test_include_unnamed
@@ -153,9 +183,15 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        2.rb:1:5: call +
-        2.rb:3:5: call *
-        2.rb:5:5: call -
+        2.rb:1:5: call zap.+
+        2.rb:1:5: local_var_assign zap
+        2.rb:3:5: local_var_assign zip
+        2.rb:3:5: call zip.*
+        2.rb:5:5: call zoop.-
+        2.rb:5:5: local_var_assign zoop
+        2.rb:7:8: local_var zip
+        2.rb:7:15: local_var zap
+        2.rb:7:22: local_var zoop
         2.rb:9:5: call []
         2.rb:11:5: call =~
       RUBY
@@ -183,6 +219,7 @@ module Referral
         THINGS constant_declaration
         vroom! instance_method
         B module
+        car local_var_assign
         new call
         THINGS constant
         vroom! call
