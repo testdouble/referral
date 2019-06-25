@@ -14,7 +14,7 @@ class Refer::CliTest < ReferTest
       a_1.rb:4:2: A::Car#vroom! (instance_method)
       a_1.rb:8:0: A::B (module)
       a_2.rb:3:6: A::Car.new (call)
-      a_2.rb:5:5: A::Car::THINGS (constant_reference)
+      a_2.rb:5:5: A::Car::THINGS (constant)
       a_2.rb:7:0: vroom! (call)
     RUBY
   end

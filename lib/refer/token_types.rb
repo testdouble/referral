@@ -45,14 +45,14 @@ module Refer
       name_finder: ->(node) { node.children[1] }
     ),
     constant_ref: Value::NodeType.new(
-      name: :constant_reference,
+      name: :constant,
       ast_type: :CONST,
       join_separator: "::",
       token_type: :reference,
       name_finder: ->(node) { node.children[0] }
     ),
     double_colon: Value::NodeType.new(
-      name: :constant_reference,
+      name: :constant,
       ast_type: :COLON2,
       join_separator: "::",
       token_type: :reference,
