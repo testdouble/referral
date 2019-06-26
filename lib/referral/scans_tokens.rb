@@ -6,6 +6,7 @@ module Referral
   class ScansTokens
     def initialize
       @expands_directories = ExpandsDirectories.new
+      @translates_node_to_token = TranslatesNodeToToken.new
       @tokenizes_identifiers = TokenizesIdentifiers.new
     end
 
@@ -28,17 +29,11 @@ module Referral
       nodes.flat_map { |node|
         next unless node.is_a?(RubyVM::AbstractSyntaxTree::Node)
 
-        if (definition = TranslatesNodeToToken.definition(node, parent, file))
-          @tokenizes_identifiers.call(node, definition)
-          [definition, *find_tokens(node.children[1..-1], definition, file)]
+        if (token = @translates_node_to_token.call(node, parent, file))
+          @tokenizes_identifiers.call(node, token)
+          [token, *find_tokens(node.children[1..-1], token, file)]
         else
-          children = find_tokens(node.children, parent, file)
-          if (reference = TranslatesNodeToToken.reference(node, children.first, file))
-            children.each(&:hide!)
-            [reference, *children]
-          else
-            children
-          end
+          find_tokens(node.children, parent, file)
         end
       }.compact
     end

@@ -50,6 +50,7 @@ module Referral
 
       def join_names(tokens)
         tokens.reduce("") { |s, token|
+          next s unless token.name
           if s.empty?
             token.name.to_s
           else

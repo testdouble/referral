@@ -236,9 +236,7 @@ module Referral
 
     # reinvented here to avoid indirectly calling the thing under test
     def token_for(node, parent = nil)
-      return unless (type = TOKEN_TYPES.values.find { |d|
-                       d.token_type == :definition && node.type == d.ast_type
-                     })
+      return unless (type = TOKEN_TYPES.values.find { |d| node.type == d.ast_type })
 
       Value::Token.new(
         name: type.name_finder.call(node),

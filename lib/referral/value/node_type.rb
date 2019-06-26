@@ -6,6 +6,8 @@ module Referral
       :join_separator,
       :name_finder,
       :token_type,
+      :reverse_identifiers,
+      :good_parent,
       keyword_init: true
     )
     end

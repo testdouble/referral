@@ -13,20 +13,26 @@ module Referral
       ast_type: :MODULE,
       join_separator: JOIN_SEPARATORS[:double_colon],
       token_type: :definition,
-      name_finder: ->(node) { node.children[0].children[1] }
+      reverse_identifiers: false,
+      good_parent: true,
+      name_finder: ->(node) { nil }
     ),
     class: Value::NodeType.new(
       name: :class,
       ast_type: :CLASS,
       join_separator: JOIN_SEPARATORS[:double_colon],
       token_type: :definition,
-      name_finder: ->(node) { node.children[0].children[1] }
+      reverse_identifiers: false,
+      good_parent: true,
+      name_finder: ->(node) { nil }
     ),
     constant_def: Value::NodeType.new(
       name: :constant_declaration,
       ast_type: :CDECL,
       join_separator: JOIN_SEPARATORS[:double_colon],
       token_type: :definition,
+      reverse_identifiers: false,
+      good_parent: true,
       name_finder: ->(node) { node.children[0] }
     ),
     class_method: Value::NodeType.new(
@@ -34,6 +40,8 @@ module Referral
       ast_type: :DEFS,
       join_separator: JOIN_SEPARATORS[:dot],
       token_type: :definition,
+      reverse_identifiers: false,
+      good_parent: true,
       name_finder: ->(node) { node.children[1] }
     ),
     instance_method: Value::NodeType.new(
@@ -41,6 +49,8 @@ module Referral
       ast_type: :DEFN,
       join_separator: JOIN_SEPARATORS[:hash],
       token_type: :definition,
+      reverse_identifiers: false,
+      good_parent: true,
       name_finder: ->(node) { node.children[0] }
     ),
     local_var_assign: Value::NodeType.new(
@@ -48,6 +58,8 @@ module Referral
       ast_type: :LASGN,
       join_separator: JOIN_SEPARATORS[:tilde],
       token_type: :definition,
+      reverse_identifiers: false,
+      good_parent: false,
       name_finder: ->(node) { node.children[0] }
     ),
     instance_var_assign: Value::NodeType.new(
@@ -55,6 +67,8 @@ module Referral
       ast_type: :IASGN,
       join_separator: JOIN_SEPARATORS[:tilde],
       token_type: :definition,
+      reverse_identifiers: false,
+      good_parent: false,
       name_finder: ->(node) { node.children[0] }
     ),
     class_var_assign: Value::NodeType.new(
@@ -62,6 +76,8 @@ module Referral
       ast_type: :CVASGN,
       join_separator: JOIN_SEPARATORS[:tilde],
       token_type: :definition,
+      reverse_identifiers: false,
+      good_parent: false,
       name_finder: ->(node) { node.children[0] }
     ),
     global_var_assign: Value::NodeType.new(
@@ -69,6 +85,8 @@ module Referral
       ast_type: :GASGN,
       join_separator: JOIN_SEPARATORS[:tilde],
       token_type: :definition,
+      reverse_identifiers: false,
+      good_parent: false,
       name_finder: ->(node) { node.children[0] }
     ),
     attr_assign: Value::NodeType.new(
@@ -76,6 +94,8 @@ module Referral
       ast_type: :ATTRASGN,
       join_separator: JOIN_SEPARATORS[:tilde],
       token_type: :definition,
+      reverse_identifiers: false,
+      good_parent: false,
       name_finder: ->(node) { node.children[1] }
     ),
     call: Value::NodeType.new(
@@ -83,6 +103,8 @@ module Referral
       ast_type: :CALL,
       join_separator: JOIN_SEPARATORS[:dot],
       token_type: :reference,
+      reverse_identifiers: true,
+      good_parent: true,
       name_finder: ->(node) { node.children[1] }
     ),
     # TODO: Unsure what to do with this one yet, since order is backwards
@@ -90,6 +112,7 @@ module Referral
     #   name: :function_call,
     #   ast_type: :FCALL,
     #   join_separator: JOIN_SEPARATORS[:dot],
+    #   reverse_identifiers: true,
     #   token_type: :reference,
     #   name_finder: ->(node) { node.children[0] }
     # ),
@@ -98,6 +121,8 @@ module Referral
       ast_type: :LVAR,
       join_separator: JOIN_SEPARATORS[:tilde],
       token_type: :reference,
+      reverse_identifiers: true,
+      good_parent: false,
       name_finder: ->(node) { node.children[0] }
     ),
     instance_var: Value::NodeType.new(
@@ -105,6 +130,8 @@ module Referral
       ast_type: :IVAR,
       join_separator: JOIN_SEPARATORS[:tilde],
       token_type: :reference,
+      reverse_identifiers: true,
+      good_parent: false,
       name_finder: ->(node) { node.children[0] }
     ),
     class_var: Value::NodeType.new(
@@ -112,6 +139,8 @@ module Referral
       ast_type: :CVAR,
       join_separator: JOIN_SEPARATORS[:tilde],
       token_type: :reference,
+      reverse_identifiers: true,
+      good_parent: false,
       name_finder: ->(node) { node.children[0] }
     ),
     global_var: Value::NodeType.new(
@@ -119,6 +148,8 @@ module Referral
       ast_type: :GVAR,
       join_separator: JOIN_SEPARATORS[:tilde],
       token_type: :reference,
+      reverse_identifiers: true,
+      good_parent: false,
       name_finder: ->(node) { node.children[0] }
     ),
     constant_ref: Value::NodeType.new(
@@ -126,6 +157,8 @@ module Referral
       ast_type: :CONST,
       join_separator: JOIN_SEPARATORS[:double_colon],
       token_type: :reference,
+      reverse_identifiers: true,
+      good_parent: false,
       name_finder: ->(node) { node.children[0] }
     ),
     double_colon: Value::NodeType.new(
@@ -133,6 +166,8 @@ module Referral
       ast_type: :COLON2,
       join_separator: JOIN_SEPARATORS[:double_colon],
       token_type: :reference,
+      reverse_identifiers: true,
+      good_parent: false,
       name_finder: ->(node) { node.children[1] }
     ),
     triple_colon: Value::NodeType.new(
@@ -140,6 +175,8 @@ module Referral
       ast_type: :COLON3,
       join_separator: JOIN_SEPARATORS[:double_colon],
       token_type: :reference,
+      reverse_identifiers: true,
+      good_parent: false,
       name_finder: ->(node) { node.children[0] }
     ),
   }
