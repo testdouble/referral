@@ -5,6 +5,9 @@ module Referral
     def call(root_node, root_token)
       find_names(root_node, root_token).tap do |identifiers|
         root_token.identifiers = identifiers # eww gross mutation
+        if identifiers.any? { |id| id.node_type == TOKEN_TYPES[:triple_colon] }
+          root_token.parent = nil
+        end
       end
     end
 

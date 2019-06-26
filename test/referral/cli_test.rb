@@ -36,6 +36,8 @@ module Referral
         3.rb:11:19: instance_var @bar
         3.rb:11:27: class_var @@baz
         3.rb:11:36: global_var $qux
+        3.rb:13:2: constant_declaration Super::Duper::THINGS
+        3.rb:14:7: constant Super::Duper::THINGS
       RUBY
     end
 

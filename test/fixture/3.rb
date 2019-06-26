@@ -10,4 +10,6 @@ class Neat
 
     puts "#{foo} #{@bar} #{@@baz} #{$qux}"
   end
+  ::Super::Duper::THINGS = 5
+  puts ::Super::Duper::THINGS
 end

@@ -120,5 +120,12 @@ module Referral
       token_type: :reference,
       name_finder: ->(node) { node.children[1] }
     ),
+    triple_colon: Value::NodeType.new(
+      name: :constant,
+      ast_type: :COLON3,
+      join_separator: JOIN_SEPARATORS[:double_colon],
+      token_type: :reference,
+      name_finder: ->(node) { node.children[0] }
+    ),
   }
 end
