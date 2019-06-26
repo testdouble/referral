@@ -4,7 +4,7 @@ module Referral
       token_tokens = names_from_token(token)
       query_tokens = names_from_query(query)
 
-      token_tokens.each_cons(query_tokens.size).include?(query_tokens)
+      token_tokens & query_tokens == query_tokens
     end
 
     def self.entirely(token, query)
