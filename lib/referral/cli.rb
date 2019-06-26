@@ -9,6 +9,10 @@ module Referral
 
     def call
       PrintsResults.new.call(Runner.new.call(@options), @options)
+    rescue => e
+      warn "FATAL ERROR: #{e.message}"
+      warn e.backtrace
+      exit 1
     end
   end
 end
