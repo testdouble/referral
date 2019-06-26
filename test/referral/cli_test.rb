@@ -28,10 +28,10 @@ module Referral
       assert_equal <<~RUBY, fake_out.string
         3.rb:1:0: class Neat
         3.rb:2:2: instance_method Neat#cool
-        3.rb:3:4: local_var_assign Neat#cool->foo
-        3.rb:5:4: instance_var_assign Neat#cool->@bar
-        3.rb:7:4: class_var_assign Neat#cool->@@baz
-        3.rb:9:4: global_var_assign Neat#cool->$qux
+        3.rb:3:4: local_var_assign Neat#cool~foo
+        3.rb:5:4: instance_var_assign Neat#cool~@bar
+        3.rb:7:4: class_var_assign Neat#cool~@@baz
+        3.rb:9:4: global_var_assign Neat#cool~$qux
         3.rb:11:12: local_var foo
         3.rb:11:19: instance_var @bar
         3.rb:11:27: class_var @@baz
