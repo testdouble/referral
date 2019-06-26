@@ -71,6 +71,13 @@ module Referral
       token_type: :definition,
       name_finder: ->(node) { node.children[0] }
     ),
+    attr_assign: Value::NodeType.new(
+      name: :attr_assign,
+      ast_type: :ATTRASGN,
+      join_separator: JOIN_SEPARATORS[:tilde],
+      token_type: :definition,
+      name_finder: ->(node) { node.children[1] }
+    ),
     call: Value::NodeType.new(
       name: :call,
       ast_type: :CALL,
@@ -78,6 +85,14 @@ module Referral
       token_type: :reference,
       name_finder: ->(node) { node.children[1] }
     ),
+    # TODO: Unsure what to do with this one yet, since order is backwards
+    # function_call: Value::NodeType.new(
+    #   name: :function_call,
+    #   ast_type: :FCALL,
+    #   join_separator: JOIN_SEPARATORS[:dot],
+    #   token_type: :reference,
+    #   name_finder: ->(node) { node.children[0] }
+    # ),
     local_var: Value::NodeType.new(
       name: :local_var,
       ast_type: :LVAR,
