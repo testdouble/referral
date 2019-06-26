@@ -1,5 +1,5 @@
 module Referral
-  COLUMNS = {
+  COLUMN_FUNCTIONS = {
     location: ->(token) {
       "#{token.file}:#{token.line}:#{token.column}:"
     },
@@ -16,17 +16,17 @@ module Referral
 
   class PrintsResults
     def call(result, options)
-      if options[:"print-headers"]
+      if options[:print_headers]
         puts options[:columns].join(options[:delimiter])
       end
 
       result.tokens.each do |token|
         next if token.hidden?
         cells = options[:columns].map { |column_name|
-          if (column = COLUMNS[column_name.to_sym])
+          if (column = COLUMN_FUNCTIONS[column_name.to_sym])
             column.call(token)
           else
-            raise "Column '#{column_name}' not found in Referral::COLUMNS"
+            raise "Column '#{column_name}' not found in Referral::COLUMN_FUNCTIONS"
           end
         }
         puts cells.join(options[:delimiter])
