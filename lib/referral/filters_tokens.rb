@@ -27,20 +27,18 @@ module Referral
       end
     },
   }
-  class FiltersResults
-    def call(result, options)
+  class FiltersTokens
+    def call(tokens, options)
       filters = options.to_h.select { |opt_name, opt_val|
         FILTER_FUNCTIONS.key?(opt_name) && !opt_val.nil?
       }
 
       if !filters.empty?
-        Value::Result.new(result.to_h.merge(
-          tokens: result.tokens.filter { |token|
-            filters.all? { |(opt_name, opt_val)|
-              FILTER_FUNCTIONS[opt_name].call(token, opt_val)
-            }
+        tokens.filter { |token|
+          filters.all? { |(opt_name, opt_val)|
+            FILTER_FUNCTIONS[opt_name].call(token, opt_val)
           }
-        ))
+        }
       else
         result
       end

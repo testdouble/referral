@@ -3,16 +3,17 @@ require "referral/value/options"
 
 module Referral
   class ParsesOptions
-    DEFAULT_OPTIONS = Value::Options.new(
-      columns: ["location", "type", "full_name"],
-      delimiter: " ",
-      include_unnamed: false,
-      sort: "file",
-      print_headers: false,
-    ).freeze
-
     def call(argv)
-      parsed_options = {}.tap do |options|
+      options = snake_case(run_optparse(argv))
+      Value::Options.default.merge(
+        merge_files(options, argv)
+      ).freeze
+    end
+
+    private
+
+    def run_optparse(argv)
+      {}.tap do |options|
         op = OptionParser.new
         op.banner += " files"
         op.version = Referral::VERSION
@@ -30,15 +31,20 @@ module Referral
           "\"#{v}\"".undump
         end
         op.parse!(argv, into: options)
-        options.transform_keys! do |k|
-          k.to_s.tr("-", "_").to_sym
-        end
       end
-
-      DEFAULT_OPTIONS.merge(parsed_options).freeze
     end
 
-    private
+    def snake_case(options)
+      options.transform_keys { |k|
+        k.to_s.tr("-", "_").to_sym
+      }
+    end
+
+    def merge_files(options, argv)
+      options.merge(
+        files: argv.empty? ? Dir["**/*.rb"] : argv.dup
+      )
+    end
 
     def version!(op)
       op.on("-v", "--version", "Prints the version") do

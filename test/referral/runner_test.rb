@@ -1,4 +1,6 @@
 require "test_helper"
+require "referral/runner"
+require "referral/value/options"
 
 module Referral
   class RunnerTest < ReferralTest
@@ -9,7 +11,7 @@ module Referral
     def test_fixture_1
       @file = "test/fixture/1.rb"
 
-      result = @subject.call(files: [@file])
+      result = @subject.call(Value::Options.default(files: [@file]))
 
       tokens = result.tokens
       tokens.each { |d| d.identifiers = nil } # <- not ideal but makes assert hard
