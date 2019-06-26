@@ -8,10 +8,14 @@ module Referral
     end
 
     def call(files:, &blk)
-      files.flat_map do |file|
-        root = RubyVM::AbstractSyntaxTree.parse_file(file)
-        find_tokens([root], nil, file)
-      end
+      files.flat_map { |file|
+        begin
+          root = RubyVM::AbstractSyntaxTree.parse_file(file)
+          find_tokens([root], nil, file)
+        rescue SyntaxError => e
+          warn "ERROR: Failed to parse \"#{file}\": #{e.message} (#{e.class})"
+        end
+      }.compact
     end
 
     private

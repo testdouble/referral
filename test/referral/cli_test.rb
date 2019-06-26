@@ -227,5 +227,15 @@ module Referral
         vroom! call
       RUBY
     end
+
+    def test_failure_to_parse
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[unparseable.rb]).call
+      }
+      assert_equal <<~RUBY, fake_err.string
+        ERROR: Failed to parse "unparseable.rb": syntax error, unexpected end-of-input, expecting end (SyntaxError)
+      RUBY
+      assert_empty fake_out.string
+    end
   end
 end
