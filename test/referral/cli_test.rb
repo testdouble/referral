@@ -237,5 +237,33 @@ module Referral
       RUBY
       assert_empty fake_out.string
     end
+
+    def test_passing_a_directory
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[a]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        a/a_1.rb:1:0: module A
+        a/a_1.rb:2:0: class A::Car
+        a/a_1.rb:3:2: constant_declaration A::Car::THINGS
+        a/a_1.rb:4:2: instance_method A::Car#vroom!
+        a/a_1.rb:8:0: module A::B
+        a/a_2.rb:3:0: local_var_assign car
+        a/a_2.rb:3:6: call A::Car.new
+        a/a_2.rb:5:5: constant A::Car::THINGS
+        a/a_2.rb:7:0: call car.vroom!
+      RUBY
+    end
+
+    def test_passing_a_not_existing_file
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[bs.js]).call
+      }
+      assert_equal <<~RUBY, fake_err.string
+        ERROR: Failed to read "bs.js": No such file or directory @ rb_sysopen - bs.js (Errno::ENOENT)
+      RUBY
+      assert_empty fake_out.string
+    end
   end
 end
