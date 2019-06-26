@@ -28,5 +28,5 @@ jobs:
             - ./vendor/bundle
           key: v1-dependencies-{{ checksum "Gemfile.lock" }}
 
-      - run: rake
+      - run: bundle exec rake
 
