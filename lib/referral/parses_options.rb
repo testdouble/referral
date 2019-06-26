@@ -6,6 +6,7 @@ module Referral
       columns: ["location", "type", "full_name"],
       delimiter: " ",
       "include-unnamed": false,
+      sort: "file",
       "print-headers": false,
     }.freeze
 
@@ -19,7 +20,8 @@ module Referral
         op.on("--exact-name [NAME]", Array, "Exact name to filter")
         op.on("--full-name [NAME]", Array, "Exact, fully-qualified name to filter")
         op.on("-p", "--pattern [PATTERN]", Regexp, "Regex pattern to filter")
-        op.on("-c", "--columns [NAME]", Array, "Columns to print (default: location,type,full_name)")
+        op.on("-c", "--columns [COL1,COL2,COL3]", Array, "Columns to print (default: location,type,full_name)")
+        op.on("-s", "--sort [NAME]", "Sort order (default: file)")
         op.on("-d", "--delimiter [DELIM]", "String separating columns (default: ' ')") do |v|
           "\"#{v}\"".undump
         end

@@ -1,5 +1,6 @@
 require "referral/parses_options"
 require "referral/filters_results"
+require "referral/sorts_results"
 require "referral/prints_results"
 
 module Referral
@@ -11,8 +12,11 @@ module Referral
 
     def call
       PrintsResults.new.call(
-        FiltersResults.new.call(
-          Runner.new.call(files: @files),
+        SortsResults.new.call(
+          FiltersResults.new.call(
+            Runner.new.call(files: @files),
+            @options
+          ),
           @options
         ),
         @options
