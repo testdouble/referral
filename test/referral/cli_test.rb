@@ -265,5 +265,24 @@ module Referral
       RUBY
       assert_empty fake_out.string
     end
+
+    def test_scope_sort
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[-s scope 5.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        5.rb:4:0: module X
+        5.rb:12:0: class X::W
+        5.rb:22:0: class X::W
+        5.rb:13:2: instance_method X::W#p?
+        5.rb:23:2: instance_method X::W#r?
+        5.rb:1:0: module Z
+        5.rb:7:0: module Z
+        5.rb:8:2: class Z::Y
+        5.rb:17:0: class Z::Y
+        5.rb:18:2: instance_method Z::Y#q?
+      RUBY
+    end
   end
 end

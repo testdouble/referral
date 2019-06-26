@@ -24,9 +24,9 @@ module Referral
         op.on("--full-name [NAME]", Array, "Exact, fully-qualified name(s) to filter")
         op.on("-p", "--pattern [PATTERN]", Regexp, "Regex pattern to filter")
         op.on("--include-unnamed", TrueClass, "Include reference without identifiers (default: false)")
-        op.on("-s", "--sort [NAME]", "Sort order (default: file). See Referral::SORT_FUNCTIONS")
+        op.on("-s", "--sort {file,scope}", "(default: file). See Referral::SORT_FUNCTIONS")
         op.on("--print-headers", TrueClass, "Print header names (default: false)")
-        op.on("-c", "--columns [COL1,COL2,COL3]", Array, "Columns & order (default: location,type,full_name). See Referral::COLUMN_FUNCTIONS")
+        op.on("-c", "--columns [COL1,COL2,COL3]", Array, "(default: location,type,full_name). See Referral::COLUMN_FUNCTIONS")
         op.on("-d", "--delimiter [DELIM]", "String separating columns (default: ' ')") do |v|
           "\"#{v}\"".undump
         end
