@@ -29,8 +29,8 @@ module Referral
   }
   class FiltersResults
     def call(result, options)
-      filters = options.select { |(opt_name, _)|
-        FILTER_FUNCTIONS.key?(opt_name)
+      filters = options.to_h.select { |opt_name, opt_val|
+        FILTER_FUNCTIONS.key?(opt_name) && !opt_val.nil?
       }
 
       if !filters.empty?

@@ -1,17 +1,18 @@
 require "optparse"
+require "referral/value/options"
 
 module Referral
   class ParsesOptions
-    DEFAULT_OPTIONS = {
+    DEFAULT_OPTIONS = Value::Options.new(
       columns: ["location", "type", "full_name"],
       delimiter: " ",
       include_unnamed: false,
       sort: "file",
       print_headers: false,
-    }.freeze
+    ).freeze
 
     def call(argv)
-      DEFAULT_OPTIONS.dup.tap do |options|
+      parsed_options = {}.tap do |options|
         op = OptionParser.new
         op.banner += " files"
         op.version = Referral::VERSION
@@ -21,18 +22,20 @@ module Referral
         op.on("--exact-name [NAME]", Array, "Exact name(s) to filter")
         op.on("--full-name [NAME]", Array, "Exact, fully-qualified name(s) to filter")
         op.on("-p", "--pattern [PATTERN]", Regexp, "Regex pattern to filter")
-        op.on("-c", "--columns [COL1,COL2,COL3]", Array, "Columns & order (default: location,type,full_name). See Referral::COLUMN_FUNCTIONS")
+        op.on("--include-unnamed", TrueClass, "Include reference without identifiers (default: false)")
         op.on("-s", "--sort [NAME]", "Sort order (default: file). See Referral::SORT_FUNCTIONS")
+        op.on("--print-headers", TrueClass, "Print header names (default: false)")
+        op.on("-c", "--columns [COL1,COL2,COL3]", Array, "Columns & order (default: location,type,full_name). See Referral::COLUMN_FUNCTIONS")
         op.on("-d", "--delimiter [DELIM]", "String separating columns (default: ' ')") do |v|
           "\"#{v}\"".undump
         end
-        op.on("--print-headers", TrueClass, "Print header names (default: false)")
-        op.on("--include-unnamed", TrueClass, "Include reference without identifiers (default: false)")
         op.parse!(argv, into: options)
         options.transform_keys! do |k|
           k.to_s.tr("-", "_").to_sym
         end
       end
+
+      DEFAULT_OPTIONS.merge(parsed_options).freeze
     end
 
     private
