@@ -107,15 +107,15 @@ module Referral
       good_parent: true,
       name_finder: ->(node) { node.children[1] }
     ),
-    # TODO: Unsure what to do with this one yet, since order is backwards
-    # function_call: Value::NodeType.new(
-    #   name: :function_call,
-    #   ast_type: :FCALL,
-    #   join_separator: JOIN_SEPARATORS[:dot],
-    #   reverse_identifiers: true,
-    #   token_type: :reference,
-    #   name_finder: ->(node) { node.children[0] }
-    # ),
+    function_call: Value::NodeType.new(
+      name: :function_call,
+      ast_type: :FCALL,
+      join_separator: JOIN_SEPARATORS[:dot],
+      token_type: :reference,
+      reverse_identifiers: true,
+      good_parent: true,
+      name_finder: ->(node) { node.children[0] }
+    ),
     local_var: Value::NodeType.new(
       name: :local_var,
       ast_type: :LVAR,
