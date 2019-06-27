@@ -1,10 +1,21 @@
+require "referral/file_store"
+
 module Referral
   COLUMN_FUNCTIONS = {
+    id: ->(token) {
+      token.id
+    },
     location: ->(token) {
       "#{token.file}:#{token.line}:#{token.column}:"
     },
-    id: ->(token) {
-      token.id
+    file: ->(token) {
+      token.file
+    },
+    line: ->(token) {
+      token.line
+    },
+    column: ->(token) {
+      token.column
     },
     type: ->(token) {
       token.type_name
@@ -17,6 +28,9 @@ module Referral
     },
     full_name: ->(token) {
       token.full_name
+    },
+    source: ->(token) {
+      FileStore.read_line(token.file, token.line)
     },
   }
 

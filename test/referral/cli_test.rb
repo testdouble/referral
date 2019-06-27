@@ -329,5 +329,21 @@ module Referral
         5.rb:18:2: instance_method Z::Y q?
       RUBY
     end
+
+    def test_source_column
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[-c file,line,column,type,source 4.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        4.rb 1 0 attr_assign Foo::Bar::BAZ.things = "hey"
+        4.rb 3 0 function_call puts Foo::Bar::BAZ.things
+        4.rb 3 5 call puts Foo::Bar::BAZ.things
+        4.rb 5 0 function_call foo(bar(baz(qux = 5)))
+        4.rb 5 4 function_call foo(bar(baz(qux = 5)))
+        4.rb 5 8 function_call foo(bar(baz(qux = 5)))
+        4.rb 5 12 local_var_assign foo(bar(baz(qux = 5)))
+      RUBY
+    end
   end
 end
