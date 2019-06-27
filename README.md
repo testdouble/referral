@@ -1,29 +1,30 @@
-# referral
+# Referral 🔍
 
-Referral is a CLI toolkit for helping you undertake complex analysis and
-refactoring of Ruby codebases. It finds, filters, and sorts the definitions & references of most of the
-identifiers (e.g. classes, methods, and variables) throughout your code.
+Referral is a CLI to help you undertake complex analyses and refactorings of
+Ruby codebases. It finds, filters, and sorts the definitions & references of
+most types of Ruby identifiers (e.g. classes, methods, and variables) throughout
+your code.
 
-Think of `referral` as a toolkit for tracking down references to the code that
-you want to change, offering a number of command-line options to quickly enable
-you to do things like:
+Think of `referral` as a toolkit for tracking down references in your code for
+any of a number of purposes, offering a boatload of command-line options to
+enable you to efficiently accomplish things like:
 
 * Size up a codebase by gathering basic statistics and spotting usage hotspots
 * Build a to-do list to help you manage a large or complex refactor
+* Rather than wait for warnings at runtime, quickly make a list of every call to
+  a deprecated method
 * Get a sense for how many callers would be impacted if you deleted a method
 * Before renaming a module, verify there aren't any already other modules with
   the new name
 * Verify that you removed every reference to a deleted class before you merge
 * Identify dead code, like method definitions that aren't invoked anywhere
 * Catch references that haven't been updated since a change that affected them
-  (via `git-blame`)
-* Rather than wait for warnings at runtime, quickly make a list of every call to
-  deprecated methods
+  (according to `git-blame`)
 
 Because Referral is powered by the introspection made possible by Ruby 2.6's
 [RubyVM::AbstractSyntaxTree](https://ruby-doc.org/core-2.6.3/RubyVM/AbstractSyntaxTree.html)
-API, it requires Ruby 2.6, but can often analyze codebases that target older
-Rubies.
+API, it must be run with Ruby 2.6 or later. Nevertheless, it can often analyze
+code _listings_ designed to run on older Rubies.
 
 ## Install
 
@@ -39,12 +40,12 @@ Or in your `Gemfile`
 gem "referral", require: false, group: :development
 ```
 
-## Usage
+## How to use Referral
 
 ### Basic usage
 
 At its most basic, you can just run `referral` and it'll scan `**/*.rb` from the
-current working directory and print everything:
+current working directory and print every reference it finds:
 
 ```
 $ referral
@@ -58,20 +59,22 @@ By default, Referral will sort entries by file, line, and column. Default output
 is broken into 4 columns: `location`, `type`, `scope`, and `name`.
 
 Everything above can be custom-tailored to your purposes, so let's work through
-some examples below.
+some example recipes to teach you Referral's various features below. (Or, feel
+free to skip to the [full list of
+options](https://github.com/testdouble/referral#options)).
 
-### Build a refactoring to-do spreadsheet
+### Recipe: build a refactoring to-do spreadsheet
 
 When I'm undergoing a large refactor, I like to start by grepping around for all
-the obvious definitions and references that might be affected. Suppose I'm
-going to make major changes to my `User` class, I might search with the
-`--exact-name` filter like this:
+the obvious definitions and references that might be affected. Suppose I'm going
+to make major changes to my `User` class. I might use Referral's `--exact-name`
+filter like this:
 
 ```
 referral --exact-name User,user,@user,@current_user
 ```
 
-[Fun fact: if I'd have wanted to match on partial names, I could have used the looser
+[**Fun fact:** if I'd have wanted to match on partial names, I could have used the looser
 `--name`, or for fully-qualified names (e.g. `API::User`), the stricter
 `--full-name` option.]
 
@@ -84,10 +87,13 @@ makes more sense to sort by the fully-qualified scope, which can be done with
 referral --exact-name User,user,@user,@current_user --sort scope
 ```
 
+The above will sort results by their fully-qualified names (e.g. `A::B#c`),
+rather than their filenames.
+
 Of course, if we want a checklist, the default output could be made a lot nicer
 for export to a spreadsheet app like [Numbers](https://www.apple.com/numbers/).
-
-Here's what that might look like:
+Here's how you might invoke `referral` to save a tab-separated-values (TSV)
+file:
 
 ```
 referral --exact-name User,user,@user,@current_user --sort scope --print-headers --delimiter "\t" > user_refs.tsv
@@ -104,12 +110,12 @@ Now, to open it in Numbers, I'd run:
 open -a Numbers user_refs.tsv
 ```
 
-And be immediately greeted by a spreadsheet. Heck, why not throw a checkbox on
-there while we're at it:
+And you'll be greeted by a spreadsheet. And hey, why not throw a checkbox column
+on there while you're at it:
 
 <img width="1272" alt="Screen Shot 2019-06-27 at 1 27 42 PM" src="https://user-images.githubusercontent.com/79303/60287234-64560a00-98df-11e9-9fed-46c68fdaac58.png">
 
-### Detect references you forgot to update
+### Recipe: detect references you forgot to update
 
 When working in a large codebase, it can be really tough to figure out if you
 remembered to update every reference to a class or method across thousands of
@@ -129,21 +135,20 @@ test/lib/splits_furigana_test.rb 56 634edc04 searls@gmail.com 2017-09-04T13:34:0
 test/lib/splits_furigana_test.rb 56 634edc04 searls@gmail.com 2017-09-04T13:34:09Z @subject.call
 ```
 
-[Warning: running `git-blame` on each file is, of course, a bit slow. Running
+[**Warning:** running `git-blame` on each file is, of course, a bit slow. Running
 this command on the [KameSame](https://kamesame.com) codebase took 3 seconds of
 wall-time, compared to 0.7 seconds by default.]
 
-And it gets better! Since we're already running blame, why not sort every line
-by its most and least recent commit time?!
-
-You can see your least-recently updated references first by adding `--sort
-least_recent_commit`, which does just what it says on the tin:
+And it gets better! Since we're already running `blame`, why not sort every line
+by its most and least recent commit time? You can! To list the
+least-recently-changed references first, add the option `--sort
+least_recent_commit`:
 
 ```
-referral --column file,line,git_sha,git_author,git_commit_at,full_name --sort least_recent_commit
+referral --sort least_recent_commit --column file,line,git_sha,git_author,git_commit_at,full_name
 ```
 
-And I'll see that my least-recently-updated Ruby reference is:
+In my case, I see that my least-recently-updated Ruby reference is:
 
 ```
 app/channels/application_cable/channel.rb 1  searls@gmail.com 2017-08-20T14:59:35Z ApplicationCable
@@ -152,7 +157,7 @@ app/channels/application_cable/channel.rb 1  searls@gmail.com 2017-08-20T14:59:3
 The inclusion of `git-blame` fields and sorting can be a powerful tool to
 spot-check a large refactor before deciding to merge it in.
 
-### Search for a regex pattern and print the source
+### Recipe: search for a regex pattern and print the source
 
 Once in a while, I'll want to scan line-by-line in a codebase for lines that
 match a given pattern, and in those cases, the `--pattern` option and `source`
@@ -183,17 +188,19 @@ with a lot of (apparent) arguments? You could filter the matches down with
 referral --pattern "/^([^,]*,){4,}[^,]*$/" -c location,git_commit_at,source -s most_recent_commit --type instance_method,class_method
 ```
 
-And I can see that as recently as June 6th, I apparently wrote a very long
-method definition. `find` can't do that (I think)!
+In my results, I learned that as recently as June 6th, I wrote a very
+long method definition:
 
 ```
 app/lib/presents_review_result.rb:60:2: 2019-06-02T02:38:01Z   def item_result(study_card_identifier, user, answer, item, learning, judgment, reward)
 ```
 
+`find` couldn't have told me that (I don't think)!
+
 ## Options
 
-The help output of `referral --help` will print out the available options and
-defaults:
+Referral provides a lot of options. The help output of `referral --help` will
+print out the available options and their defaults:
 
 ```
 Usage: referral [options] files
@@ -214,28 +221,29 @@ Usage: referral [options] files
 A few things to note:
 
 * Each of `--name`, `--exact-name`, `--full-name`, `--type`, and `--columns`
-  accept comma-separated arrays (e.g. `-n foo,bar,baz`)
+  accept comma-separated arrays (e.g. `--name foo,bar,baz`)
 
 * You can browse available sort functions [in
-  Refferral::SORT_FUNCTIONS](/lib/referral/sorts_tokens.rb) for use with
+  Referral::SORT_FUNCTIONS](/lib/referral/sorts_tokens.rb) for use with
   `--sort`. Each key is the name to be specified on the command line. (If you're
   feeling adventurous, we've left the hash unfrozen so you can define your own
   custom sorts dynamically, but YMMV.)
 
 * Just like sort functions, you can find the available column types [in
-  Refferral::COLUMN_FUNCTIONS](/lib/referral/prints_results.rb) when passing a
+  Referral::COLUMN_FUNCTIONS](/lib/referral/prints_results.rb) when passing a
   comma-separated list to `--column`. (This hash has
   also been left mutable for you, dear user.)
 
 * The types of AST nodes that Referral supports can be found [in
-  Refferral::TOKEN_TYPES](/lib/referral/token_types.rb) when filtering to
-  certain `--type`
+  Referral::TOKEN_TYPES](/lib/referral/token_types.rb) when filtering to
+  certain definition & reference types with `--type`
 
 * Note that the columns `git_sha`, `git_author`, `git_commit_at` and the sort
-  functions `most_recent_commit` and `least_recent_commit` will incur a
-  `git-blame` invocation for each file counted among the filtered results
+  functions `most_recent_commit` and `least_recent_commit` will slow things down
+  a bit, by invoking `git-blame` for each file included in the filtered
+  results
 
-* Note that the `source` column and `--pattern` options will read each file in
+* The `source` column and `--pattern` options will read each file in
   the result set twice: once when parsing the AST, and again when printing
   results
 
