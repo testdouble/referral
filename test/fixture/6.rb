@@ -2,7 +2,7 @@
 class FirstThing
   def second_thing
     third_thing(
-      nil
+      ::FOURTH_THING
     )
   end
 end
