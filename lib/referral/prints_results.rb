@@ -4,13 +4,16 @@ module Referral
       "#{token.file}:#{token.line}:#{token.column}:"
     },
     type: ->(token) {
-      token.type_name.to_s
+      token.type_name
+    },
+    scope: ->(token) {
+      token.scope
     },
     name: ->(token) {
-      token.name.to_s
+      token.literal_name
     },
     full_name: ->(token) {
-      token.full_name.to_s
+      token.full_name
     },
   }
 

@@ -33,7 +33,10 @@ module Referral
       token_type: :definition,
       reverse_identifiers: false,
       good_parent: true,
-      name_finder: ->(node) { node.children[0] }
+      name_finder: ->(node) {
+        possible_name = node.children[0]
+        possible_name.is_a?(Symbol) ? possible_name : nil
+      }
     ),
     class_method: Value::NodeType.new(
       name: :class_method,
@@ -113,7 +116,7 @@ module Referral
       join_separator: JOIN_SEPARATORS[:dot],
       token_type: :reference,
       reverse_identifiers: true,
-      good_parent: true,
+      good_parent: false,
       name_finder: ->(node) { node.children[0] }
     ),
     local_var: Value::NodeType.new(

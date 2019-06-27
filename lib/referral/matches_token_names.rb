@@ -12,7 +12,7 @@ module Referral
     end
 
     def self.names_from_token(token)
-      token.fully_qualified.map { |t| t.name.to_s }
+      token.fully_qualified.reject { |t| t.name.nil? }.map { |t| t.name.to_s }
     end
 
     def self.names_from_query(query)

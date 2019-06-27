@@ -18,6 +18,11 @@ module Referral
         join_names(fully_qualified)
       end
 
+      def scope
+        return "" unless parent
+        parent.full_name
+      end
+
       def literal_name
         if identifiers.empty?
           name.to_s
@@ -27,7 +32,7 @@ module Referral
       end
 
       def type_name
-        node_type.name
+        node_type.name.to_s
       end
 
       def id

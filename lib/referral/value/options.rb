@@ -22,7 +22,7 @@ module Referral
       end
 
       DEFAULT = new(
-        columns: ["location", "type", "full_name"],
+        columns: ["location", "type", "scope", "name"],
         delimiter: " ",
         include_unnamed: false,
         sort: "file",

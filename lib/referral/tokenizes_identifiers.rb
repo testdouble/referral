@@ -7,13 +7,10 @@ module Referral
     end
 
     def call(root_node, root_token)
-      find_names(root_node, root_token).tap do |identifiers|
-        root_token.identifiers = if root_token.node_type.reverse_identifiers
-          # TODO WAT.
-          identifiers # .reverse
-        else
-          identifiers
-        end
+      find_names(root_node, root_token)
+        .reject { |identifier_token| identifier_token.name.nil? }
+        .tap do |identifiers|
+        root_token.identifiers = identifiers
 
         if identifiers.any? { |id| id.node_type == TOKEN_TYPES[:triple_colon] }
           root_token.parent = nil

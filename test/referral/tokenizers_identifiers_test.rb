@@ -31,7 +31,6 @@ module Referral
         column: 7
       ), result.first
       assert_equal result, root_token.identifiers
-      assert_equal :Neet, root_token.name
       assert_equal "Neet", root_token.literal_name
       assert_equal "Neet", root_token.full_name
     end
@@ -64,7 +63,6 @@ module Referral
         column: 7
       ), result[1]
       assert_equal result, root_token.identifiers
-      assert_equal :Neet, root_token.name
       assert_equal "Super::Neet", root_token.literal_name
       assert_equal "Super::Neet", root_token.full_name
     end
@@ -110,7 +108,6 @@ module Referral
         column: 9
       ), result[2]
       assert_equal result, root_token.identifiers
-      assert_equal :Neet, root_token.name
       assert_equal "Super::Duper::Neet", root_token.literal_name
       assert_equal "Really::Quite::Super::Duper::Neet", root_token.full_name
     end
@@ -156,7 +153,6 @@ module Referral
         column: 8
       ), result[2]
       assert_equal result, root_token.identifiers
-      assert_equal :Neet, root_token.name
       assert_equal "Super::Duper::Neet", root_token.literal_name
       assert_equal "Really::Quite::Super::Duper::Neet", root_token.full_name
     end
@@ -206,10 +202,9 @@ module Referral
       root_node = node.children.last
       root_token = token_for(root_node)
 
-      result = subject.call(root_node, root_token)
+      subject.call(root_node, root_token)
 
-      assert_equal 0, result.size
-      assert_equal result, root_token.identifiers
+      assert_equal 1, root_token.fully_qualified.size
       assert_equal :foo, root_token.name
       assert_equal "foo", root_token.literal_name
       assert_equal "foo", root_token.full_name
@@ -223,10 +218,9 @@ module Referral
       root_node = node.children.last
       root_token = token_for(root_node)
 
-      result = subject.call(root_node, root_token)
+      subject.call(root_node, root_token)
 
-      assert_equal 0, result.size
-      assert_equal result, root_token.identifiers
+      assert_equal 1, root_token.fully_qualified.size
       assert_equal :bar, root_token.name
       assert_equal "bar", root_token.literal_name
       assert_equal "bar", root_token.full_name
