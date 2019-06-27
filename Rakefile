@@ -1,4 +1,9 @@
-require "bundler/gem_tasks"
+begin
+  require "bundler/gem_tasks"
+rescue TypeError
+  # Support Gel
+end
+
 require "rake/testtask"
 require "standard/rake"
 
