@@ -179,11 +179,11 @@ module Referral
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
         2.rb:1:0: function_call  puts
-        2.rb:1:5: local_var_assign  zap
         2.rb:1:5: call  zap.+
+        2.rb:1:5: local_var_assign  zap
         2.rb:3:0: function_call  puts
-        2.rb:3:5: local_var_assign  zip
         2.rb:3:5: call  zip.*
+        2.rb:3:5: local_var_assign  zip
         2.rb:5:0: function_call  puts
         2.rb:5:5: local_var_assign  zoop
         2.rb:5:5: call  zoop.-
@@ -203,11 +203,11 @@ module Referral
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
         2.rb:1:0: function_call  puts
-        2.rb:1:5: local_var_assign  zap
         2.rb:1:5: call  zap.+
+        2.rb:1:5: local_var_assign  zap
         2.rb:3:0: function_call  puts
-        2.rb:3:5: local_var_assign  zip
         2.rb:3:5: call  zip.*
+        2.rb:3:5: local_var_assign  zip
         2.rb:5:0: function_call  puts
         2.rb:5:5: local_var_assign  zoop
         2.rb:5:5: call  zoop.-
@@ -235,22 +235,22 @@ module Referral
 
     def test_custom_column_ordering
       fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture/a") {
-        Cli.new(%w[-c full_name,type]).call
+        Cli.new(%w[-c id,full_name,type]).call
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        A module
-        A::Car class
-        A::Car::THINGS constant_declaration
-        A::Car#vroom! instance_method
-        A::Car#vroom!.puts function_call
-        A::B module
-        require_relative function_call
-        car local_var_assign
-        A::Car.new call
-        puts function_call
-        A::Car::THINGS constant
-        car.vroom! call
+        8157996 A module
+        ce748d5 A::Car class
+        793b0f6 A::Car::THINGS constant_declaration
+        dc3179e A::Car#vroom! instance_method
+        484adc9 A::Car#vroom!.puts function_call
+        6074cce A::B module
+        ddd4ecb require_relative function_call
+        a3616b5 car local_var_assign
+        72cfd8c A::Car.new call
+        d0ef0c9 puts function_call
+        7f464ab A::Car::THINGS constant
+        d48d374 car.vroom! call
       RUBY
     end
 

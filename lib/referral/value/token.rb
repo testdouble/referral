@@ -3,7 +3,7 @@ require "digest/sha1"
 module Referral
   module Value
     class Token < Struct.new(
-      :name, :identifiers, :node_type, :parent, :file, :line, :column, :hidden,
+      :name, :identifiers, :node_type, :parent, :file, :line, :column,
       keyword_init: true
     )
 
@@ -41,14 +41,6 @@ module Referral
           identifiers: identifiers&.map(&:id),
           node_type: node_type.name
         ).inspect)[0..6]
-      end
-
-      def hidden?
-        hidden
-      end
-
-      def hide!
-        self.hidden = true
       end
 
       protected

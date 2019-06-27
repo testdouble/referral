@@ -3,6 +3,9 @@ module Referral
     location: ->(token) {
       "#{token.file}:#{token.line}:#{token.column}:"
     },
+    id: ->(token) {
+      token.id
+    },
     type: ->(token) {
       token.type_name
     },
@@ -24,7 +27,6 @@ module Referral
       end
 
       result.tokens.each do |token|
-        next if token.hidden?
         cells = options[:columns].map { |column_name|
           if (column = COLUMN_FUNCTIONS[column_name.to_sym])
             column.call(token)
