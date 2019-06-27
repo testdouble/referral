@@ -6,14 +6,14 @@ most types of Ruby identifiers (e.g. classes, methods, and variables) throughout
 your code.
 
 Think of `referral` as a toolkit for tracking down references in your code for
-any of a number of purposes, offering a boatload of command-line options to
+any number of purposes, offering a boatload of command-line options to
 enable you to efficiently accomplish things like:
 
 * Size up a codebase by gathering basic statistics and spotting usage hotspots
 * Build a to-do list to help you manage a large or complex refactor
-* Rather than wait for warnings at runtime, quickly make a list of every call to
-  a deprecated method
-* Get a sense for how many callers would be impacted if you deleted a method
+* Quickly make a list of every call to a deprecated method, rather than wait for
+  warnings at runtime
+* Get a sense for how many callers would be impacted if you were to delete a method
 * Before renaming a module, verify there aren't any already other modules with
   the new name
 * Verify that you removed every reference to a deleted class before you merge
@@ -57,6 +57,11 @@ app/channels/application_cable/channel.rb:2:18: constant ApplicationCable::Chann
 
 By default, Referral will sort entries by file, line, and column. Default output
 is broken into 4 columns: `location`, `type`, `scope`, and `name`.
+
+If you'd like to scan a subset of files, you can pass a final argument with file
+paths and directories. For example, if you only wanted to search code in the
+top-level of `app/lib` you could run `referral app/lib/*.rb`. Or, if you wanted
+to include subdirectories, `referral app/lib`.
 
 Everything above can be custom-tailored to your purposes, so let's work through
 some example recipes to teach you Referral's various features below. (Or, feel
