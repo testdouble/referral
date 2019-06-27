@@ -18,12 +18,12 @@ module Referral
       }
     },
     least_recent_commit: ->(tokens) {
-      tokens.sort_by { |token|
+      tokens.sort_by do |token|
         [
-          GitStore.time(token.file, token.line),
+          GitStore.time(token.file, token.line).to_i,
           token.file, token.line, token.column, token.id,
         ]
-      }
+      end
     },
     most_recent_commit: ->(tokens) {
       tokens.sort_by { |token|

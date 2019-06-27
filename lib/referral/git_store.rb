@@ -19,7 +19,7 @@ module Referral
 
     def self.time(file, line)
       return unless (output = blame_line(file, line))
-      return unless (match = output.match(/\(<.*?> (\d+) /))
+      return unless (match = output.match(/\(<.*?>\s+(\d+)\s+/))
       Time.at(Integer(match[1]))
     end
 

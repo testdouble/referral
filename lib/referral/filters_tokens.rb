@@ -1,5 +1,6 @@
 require "referral/matches_token_names"
 require "referral/value/result"
+require "referral/file_store"
 
 module Referral
   FILTER_FUNCTIONS = {
@@ -16,8 +17,11 @@ module Referral
         MatchesTokenNames.entirely(token, query)
       }
     },
-    pattern: ->(token, opt_val) {
-      opt_val.match(token.full_name)
+    pattern: ->(token, regex) {
+      regex.match(token.full_name) || regex.match(FileStore.read_line(token.file, token.line))
+    },
+    type: ->(token, types) {
+      types.include?(token.node_type.name.to_s)
     },
     include_unnamed: ->(token, opt_val) {
       if !opt_val

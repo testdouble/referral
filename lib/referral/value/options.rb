@@ -7,6 +7,7 @@ module Referral
       :exact_name,
       :full_name,
       :pattern,
+      :type,
       :include_unnamed,
       # Sorting
       :sort,

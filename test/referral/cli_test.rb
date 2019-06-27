@@ -184,6 +184,7 @@ module Referral
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
         a_1.rb:3:2: constant_declaration A::Car THINGS
+        a_2.rb:5:0: function_call  puts
         a_2.rb:5:5: constant  A::Car::THINGS
       RUBY
     end
@@ -357,6 +358,18 @@ module Referral
         227200a5|searls@gmail.com|2019-06-27T14:00:22Z
         43821261|searls@gmail.com|2019-06-27T13:59:51Z
         a50eb722|searls@gmail.com|2019-06-27T13:59:31Z
+      RUBY
+    end
+
+    def test_types_filter
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[-t constant_declaration,constant 1.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        1.rb:3:2: constant_declaration Bar STUFFS
+        1.rb:11:4: constant_declaration Bar::Foo THINGS
+        1.rb:24:8: constant  Bar::Foo::THINGS
       RUBY
     end
   end
