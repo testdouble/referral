@@ -46,6 +46,22 @@ module Referral
       RUBY
     end
 
+    def test_attr_assign_and_fcall
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[4.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        4.rb:1:0: attr_assign  Foo::Bar::BAZ.things=
+        4.rb:3:0: function_call  puts
+        4.rb:3:5: call  Foo::Bar::BAZ.things
+        4.rb:5:0: function_call  foo
+        4.rb:5:4: function_call  bar
+        4.rb:5:8: function_call  baz
+        4.rb:5:12: local_var_assign  qux
+      RUBY
+    end
+
     def test_tab_delimited
       fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture/a") {
         Cli.new(%w[-n vroom -d \t]).call

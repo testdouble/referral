@@ -95,7 +95,7 @@ module Referral
     attr_assign: Value::NodeType.new(
       name: :attr_assign,
       ast_type: :ATTRASGN,
-      join_separator: JOIN_SEPARATORS[:tilde],
+      join_separator: JOIN_SEPARATORS[:dot],
       token_type: :definition,
       reverse_identifiers: false,
       good_parent: false,
