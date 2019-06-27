@@ -7,17 +7,20 @@ module Referral
 
     def self.sha(file, line)
       return unless (output = blame_line(file, line))
-      output.match(/^(\w+)/)[1]
+      return unless (match = output.match(/^(\w+)/))
+      match[1]
     end
 
     def self.author(file, line)
       return unless (output = blame_line(file, line))
-      output.match(/^\w+ \(<([^>]*)>/)[1]
+      return unless (match = output.match(/\(<([^>]*?)>/))
+      match[1]
     end
 
     def self.time(file, line)
       return unless (output = blame_line(file, line))
-      Time.at(Integer(output.match(/^\w+ \(<.*> (\d+) /)[1]))
+      return unless (match = output.match(/\(<.*?> (\d+) /))
+      Time.at(Integer(match[1]))
     end
 
     def self.blame_line(file, line)
@@ -27,6 +30,8 @@ module Referral
 
     # This format will look like:
     # a50eb722 (<searls@gmail.com> 1561643971 -0400 2) class FirstThing
+    # or
+    # a50eb722 old/file/path.rb (<searls@gmail.com> 1561643971 -0400 2) class FirstThing
     def self.blame(file)
       GROSS_BLAME_CACHE[file] ||= begin
         out, _, status = Open3.capture3("git blame -e -t \"#{file}\"")

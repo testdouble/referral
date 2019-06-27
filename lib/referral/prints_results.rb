@@ -41,7 +41,7 @@ module Referral
       GitStore.author(token.file, token.line)
     },
     git_commit_at: ->(token) {
-      GitStore.time(token.file, token.line).utc.iso8601
+      GitStore.time(token.file, token.line)&.utc&.iso8601
     },
 
   }
