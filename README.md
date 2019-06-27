@@ -14,7 +14,7 @@ enable you to efficiently accomplish things like:
 * Quickly make a list of every call to a deprecated method, rather than wait for
   warnings at runtime
 * Get a sense for how many callers would be impacted if you were to delete a method
-* Before renaming a module, verify there aren't any already other modules with
+* Before renaming a module, verify there aren't already any other modules with
   the new name
 * Verify that you removed every reference to a deleted class before you merge
 * Identify dead code, like method definitions that aren't invoked anywhere
