@@ -1,3 +1,5 @@
+require "referral/git_store"
+
 module Referral
   SORT_FUNCTIONS = {
     file: ->(tokens) {
@@ -11,10 +13,23 @@ module Referral
         names = token.fully_qualified.map { |fq| fq.name.to_s }
         [
           *names.fill("", names.size...max_length),
-          token.file,
-          token.line,
-          token.column,
-          token.id,
+          token.file, token.line, token.column, token.id,
+        ]
+      }
+    },
+    least_recent_commit: ->(tokens) {
+      tokens.sort_by { |token|
+        [
+          GitStore.time(token.file, token.line),
+          token.file, token.line, token.column, token.id,
+        ]
+      }
+    },
+    most_recent_commit: ->(tokens) {
+      tokens.sort_by { |token|
+        [
+          -1 * GitStore.time(token.file, token.line).to_i,
+          token.file, token.line, token.column, token.id,
         ]
       }
     },

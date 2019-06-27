@@ -345,5 +345,19 @@ module Referral
         4.rb 5 12 local_var_assign foo(bar(baz(qux = 5)))
       RUBY
     end
+
+    def test_git_features
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--print-headers -d | -s most_recent_commit -c git_sha,git_author,git_commit_at 6.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        git_sha|git_author|git_commit_at
+        fc3d12c1|searls@gmail.com|2019-06-27T14:00:49Z
+        227200a5|searls@gmail.com|2019-06-27T14:00:22Z
+        43821261|searls@gmail.com|2019-06-27T13:59:51Z
+        a50eb722|searls@gmail.com|2019-06-27T13:59:31Z
+      RUBY
+    end
   end
 end

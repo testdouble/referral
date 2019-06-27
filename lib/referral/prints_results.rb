@@ -1,4 +1,6 @@
+require "time"
 require "referral/file_store"
+require "referral/git_store"
 
 module Referral
   COLUMN_FUNCTIONS = {
@@ -32,6 +34,16 @@ module Referral
     source: ->(token) {
       FileStore.read_line(token.file, token.line)
     },
+    git_sha: ->(token) {
+      GitStore.sha(token.file, token.line)
+    },
+    git_author: ->(token) {
+      GitStore.author(token.file, token.line)
+    },
+    git_commit_at: ->(token) {
+      GitStore.time(token.file, token.line).utc.iso8601
+    },
+
   }
 
   class PrintsResults
