@@ -31,7 +31,7 @@ module Referral
           if (column = COLUMN_FUNCTIONS[column_name.to_sym])
             column.call(token)
           else
-            raise "Column '#{column_name}' not found in Referral::COLUMN_FUNCTIONS"
+            raise Referral::Error.new("Column '#{column_name}' not found in Referral::COLUMN_FUNCTIONS")
           end
         }
         puts cells.join(options[:delimiter])

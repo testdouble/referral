@@ -24,7 +24,7 @@ module Referral
       if (sort_func = SORT_FUNCTIONS[options[:sort].to_sym])
         sort_func.call(tokens)
       else
-        raise "Sort '#{options[:sort]} not found in Referral::SORT_FUNCTIONS"
+        raise Referral::Error.new("Sort '#{options[:sort]} not found in Referral::SORT_FUNCTIONS")
       end
     end
   end

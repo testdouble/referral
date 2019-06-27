@@ -1,6 +1,7 @@
 require "referral/runner"
 
 require "referral/version"
+require "referral/error"
 require "referral/cli"
 
 module Referral
