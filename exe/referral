@@ -4,4 +4,8 @@ $LOAD_PATH.unshift("#{__dir__}/../lib")
 
 require "referral"
 
+require "referral/ensures_working_ruby"
+Referral::EnsuresWorkingRuby.new.call
+
+require "referral/cli"
 Referral::Cli.new(ARGV.dup).call

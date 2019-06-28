@@ -1,4 +1,5 @@
 require "test_helper"
+require "referral/cli"
 
 module Referral
   class CliTest < ReferralTest

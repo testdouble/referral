@@ -1,4 +1,5 @@
 require "referral/parses_options"
+require "referral/runner"
 require "referral/prints_results"
 
 module Referral
