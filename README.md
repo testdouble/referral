@@ -120,6 +120,8 @@ on there while you're at it:
 
 <img width="1272" alt="Screen Shot 2019-06-27 at 1 27 42 PM" src="https://user-images.githubusercontent.com/79303/60287234-64560a00-98df-11e9-9fed-46c68fdaac58.png">
 
+> It is important to note that Numbers, like earlier versions of Excel, uses an unsigned Integer for row numbering that limits the number of shown rows to ~65,000. On larger codebases, referral may create more references than this. LibreOffice and newer versions of Excel do not have this limitation on viewing.
+
 ### Recipe: detect references you forgot to update
 
 When working in a large codebase, it can be really tough to figure out if you
