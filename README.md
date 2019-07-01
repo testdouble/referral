@@ -143,7 +143,7 @@ test/lib/splits_furigana_test.rb 56 634edc04 searls@gmail.com 2017-09-04T13:34:0
 ```
 
 [**Warning:** running `git-blame` on each file is, of course, a bit slow. Running
-this command on the [KameSame](https://kamesame.com) codebase took 3 seconds of
+this command on the [KameSame](https://www.kamesame.com/) codebase took 3 seconds of
 wall-time, compared to 0.7 seconds by default.]
 
 And it gets better! Since we're already running `blame`, why not sort every line
