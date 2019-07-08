@@ -381,5 +381,19 @@ module Referral
         1.rb:24:8: constant  Bar::Foo::THINGS
       RUBY
     end
+
+    def test_scope_filter
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--scope Haystack#hide 8.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        8.rb:10:4: function_call Haystack#hide puts
+        8.rb:11:4: instance_var_assign Haystack#hide @contents
+        8.rb:12:6: call  Hay.new
+        8.rb:13:6: call  Needle.poke
+        8.rb:14:6: call  Hay.new
+      RUBY
+    end
   end
 end

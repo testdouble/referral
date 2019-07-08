@@ -6,6 +6,7 @@ module Referral
       :name,
       :exact_name,
       :full_name,
+      :scope,
       :pattern,
       :type,
       :include_unnamed,

@@ -19,6 +19,10 @@ module Referral
         parent.full_name
       end
 
+      def scope_tokens
+        parent&.full_name_tokens || []
+      end
+
       def full_name
         join_names(full_name_tokens)
       end

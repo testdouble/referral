@@ -22,6 +22,7 @@ module Referral
         op.on("-n", "--name [NAME]", Array, "Partial or complete name(s) to filter")
         op.on("--exact-name [NAME]", Array, "Exact name(s) to filter")
         op.on("--full-name [NAME]", Array, "Exact, fully-qualified name(s) to filter")
+        op.on("--scope [SCOPE]", Array, "Scope(s) in which to filter (e.g. Hastack#hide)")
         op.on("-p", "--pattern [PATTERN]", Regexp, "Regex pattern to filter")
         op.on("-t", "--type [TYPES]", Array, "Include only certain types. See Referral::TOKEN_TYPES.")
         op.on("--include-unnamed", TrueClass, "Include reference without identifiers (default: false)")

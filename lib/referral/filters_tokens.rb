@@ -9,12 +9,17 @@ module Referral
     },
     exact_name: ->(token, exact_names) {
       exact_names.any? { |query|
-        MatchesTokenNames.subset(token, query)
+        MatchesTokenNames.subset(token.full_name_tokens, query)
       }
     },
-    full_name: ->(token, exact_names) {
-      exact_names.any? { |query|
-        MatchesTokenNames.entirely(token, query)
+    full_name: ->(token, full_names) {
+      full_names.any? { |query|
+        MatchesTokenNames.entirely(token.full_name_tokens, query)
+      }
+    },
+    scope: ->(token, scope_names) {
+      scope_names.any? { |query|
+        MatchesTokenNames.entirely(token.scope_tokens, query)
       }
     },
     pattern: ->(token, regex) {
