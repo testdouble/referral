@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    referral (0.0.3)
+    referral (0.0.4)
 
 GEM
   remote: https://rubygems.org/
