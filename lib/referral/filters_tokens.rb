@@ -19,7 +19,7 @@ module Referral
     },
     scope: ->(token, scope_names) {
       scope_names.any? { |query|
-        MatchesTokenNames.entirely(token.scope_tokens, query)
+        MatchesTokenNames.subset(token.scope_tokens, query)
       }
     },
     pattern: ->(token, regex) {

@@ -24,7 +24,8 @@ module Referral
       assert_includes tokens, token_for(:foz, :class_method, 13, 4, foo)
       assert_includes tokens, token_for(:fiz, :instance_method, 16, 4, foo)
       assert_includes tokens, token_for(:baz, :call, 22, 0, nil)
-      assert_includes tokens, token_for(:THINGS, :double_colon, 24, 8, nil)
+      assert_includes tokens, a_puts = token_for(:puts, :function_call, 24, 0, nil)
+      assert_includes tokens, token_for(:THINGS, :double_colon, 24, 8, a_puts)
       assert_includes tokens, token_for(:fiz, :call, 26, 0, nil)
     end
 

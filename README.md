@@ -216,8 +216,9 @@ Usage: referral [options] files
     -n, --name [NAME]                Partial or complete name(s) to filter
         --exact-name [NAME]          Exact name(s) to filter
         --full-name [NAME]           Exact, fully-qualified name(s) to filter
+        --scope [SCOPE]              Scope(s) in which to filter (e.g. Hastack#hide)
     -p, --pattern [PATTERN]          Regex pattern to filter
-    -t, --type [TYPES]              Include only certain types. See Referral::TOKEN_TYPES.
+    -t, --type [TYPES]               Include only certain types. See Referral::TOKEN_TYPES.
         --include-unnamed            Include reference without identifiers (default: false)
     -s, --sort {file,scope}          (default: file). See Referral::SORT_FUNCTIONS
         --print-headers              Print header names (default: false)
@@ -227,7 +228,7 @@ Usage: referral [options] files
 
 A few things to note:
 
-* Each of `--name`, `--exact-name`, `--full-name`, `--type`, and `--columns`
+* Each of `--name`, `--exact-name`, `--full-name`, `--scope`, `--type`, and `--columns`
   accept comma-separated arrays (e.g. `--name foo,bar,baz`)
 
 * You can browse available sort functions [in

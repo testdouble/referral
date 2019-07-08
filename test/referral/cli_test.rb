@@ -37,10 +37,10 @@ module Referral
         3.rb:7:4: class_var_assign Neat#cool @@baz
         3.rb:9:4: global_var_assign Neat#cool $qux
         3.rb:11:4: function_call Neat#cool puts
-        3.rb:11:12: local_var  foo
-        3.rb:11:19: instance_var  @bar
-        3.rb:11:27: class_var  @@baz
-        3.rb:11:36: global_var  $qux
+        3.rb:11:12: local_var Neat#cool foo
+        3.rb:11:19: instance_var Neat#cool @bar
+        3.rb:11:27: class_var Neat#cool @@baz
+        3.rb:11:36: global_var Neat#cool $qux
         3.rb:13:2: constant_declaration  Super::Duper::THINGS
         3.rb:14:2: function_call Neat puts
         3.rb:14:7: constant  Super::Duper::THINGS
@@ -390,9 +390,20 @@ module Referral
       assert_equal <<~RUBY, fake_out.string
         8.rb:10:4: function_call Haystack#hide puts
         8.rb:11:4: instance_var_assign Haystack#hide @contents
-        8.rb:12:6: call  Hay.new
-        8.rb:13:6: call  Needle.poke
-        8.rb:14:6: call  Hay.new
+        8.rb:12:6: call Haystack#hide Hay.new
+        8.rb:13:6: call Haystack#hide Needle.poke
+        8.rb:14:6: call Haystack#hide Hay.new
+      RUBY
+    end
+
+    def test_scope_filters_subset
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--scope Haystack --name Needle 8.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        8.rb:13:6: call Haystack#hide Needle.poke
+        8.rb:20:35: constant Haystack::Deep#find.is_a? Needle
       RUBY
     end
   end

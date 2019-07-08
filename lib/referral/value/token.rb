@@ -15,12 +15,18 @@ module Referral
       end
 
       def scope
-        return "" unless parent
-        parent.full_name
+        join_names(scope_tokens)
       end
 
       def scope_tokens
-        parent&.full_name_tokens || []
+        return [] if parent.nil?
+
+        ancestors.take_while { |t| t.node_type.good_parent }.flat_map(&:literal_name_tokens)
+      end
+
+      def ancestors
+        return [] if parent.nil?
+        [*parent.ancestors, parent]
       end
 
       def full_name

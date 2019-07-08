@@ -15,7 +15,9 @@ class Haystack
     ]
   end
 
-  def find
-    @contents.find { |c| c.is_a?(Needle) }
+  module Deep
+    def find
+      @contents.find { |c| c.is_a?(Needle) }
+    end
   end
 end
