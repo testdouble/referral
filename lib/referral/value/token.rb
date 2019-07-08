@@ -7,15 +7,11 @@ module Referral
       keyword_init: true
     )
 
-      def fully_qualified
+      def scope_and_names
         [
-          *parent&.fully_qualified,
-          *identity_components,
+          *parent&.scope_and_names,
+          *literal_name_tokens,
         ].compact
-      end
-
-      def full_name
-        join_names(fully_qualified)
       end
 
       def scope
@@ -23,11 +19,26 @@ module Referral
         parent.full_name
       end
 
+      def full_name
+        join_names(full_name_tokens)
+      end
+
+      def full_name_tokens
+        [
+          *(include_parents_in_full_name? ? parent&.scope_and_names : []),
+          *literal_name_tokens,
+        ].compact
+      end
+
       def literal_name
-        if identifiers.empty?
-          name.to_s
+        join_names(literal_name_tokens)
+      end
+
+      def literal_name_tokens
+        if identifiers && !identifiers.empty?
+          identifiers
         else
-          join_names(identifiers)
+          [self]
         end
       end
 
@@ -45,6 +56,10 @@ module Referral
 
       protected
 
+      def include_parents_in_full_name?
+        node_type.token_type == :definition && node_type.good_parent == true
+      end
+
       def join_names(tokens)
         tokens.reduce("") { |s, token|
           next s unless token.name
@@ -54,14 +69,6 @@ module Referral
             "#{s}#{token.node_type.join_separator}#{token.name}"
           end
         }
-      end
-
-      def identity_components
-        if identifiers && !identifiers.empty?
-          identifiers
-        else
-          [self]
-        end
       end
     end
   end

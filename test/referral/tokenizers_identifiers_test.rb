@@ -204,7 +204,7 @@ module Referral
 
       subject.call(root_node, root_token)
 
-      assert_equal 1, root_token.fully_qualified.size
+      assert_equal 1, root_token.scope_and_names.size
       assert_equal :foo, root_token.name
       assert_equal "foo", root_token.literal_name
       assert_equal "foo", root_token.full_name
@@ -220,7 +220,7 @@ module Referral
 
       subject.call(root_node, root_token)
 
-      assert_equal 1, root_token.fully_qualified.size
+      assert_equal 1, root_token.scope_and_names.size
       assert_equal :bar, root_token.name
       assert_equal "bar", root_token.literal_name
       assert_equal "bar", root_token.full_name

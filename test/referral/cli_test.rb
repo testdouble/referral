@@ -70,7 +70,6 @@ module Referral
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
         a_1.rb:4:2:	instance_method	A::Car	vroom!
-        a_1.rb:5:4:	function_call	A::Car#vroom!	puts
         a_2.rb:7:0:	call		car.vroom!
       RUBY
     end
@@ -84,7 +83,6 @@ module Referral
         a_1.rb:2:0: class  A::Car
         a_1.rb:3:2: constant_declaration A::Car THINGS
         a_1.rb:4:2: instance_method A::Car vroom!
-        a_1.rb:5:4: function_call A::Car#vroom! puts
         a_2.rb:3:6: call  A::Car.new
         a_2.rb:5:5: constant  A::Car::THINGS
       RUBY
@@ -98,7 +96,6 @@ module Referral
       assert_equal <<~RUBY, fake_out.string
         a_1.rb:3:2: constant_declaration A::Car THINGS
         a_1.rb:4:2: instance_method A::Car vroom!
-        a_1.rb:5:4: function_call A::Car#vroom! puts
         a_2.rb:5:5: constant  A::Car::THINGS
         a_2.rb:7:0: call  car.vroom!
       RUBY
@@ -113,7 +110,6 @@ module Referral
         a_1.rb:2:0: class  A::Car
         a_1.rb:3:2: constant_declaration A::Car THINGS
         a_1.rb:4:2: instance_method A::Car vroom!
-        a_1.rb:5:4: function_call A::Car#vroom! puts
         a_2.rb:3:6: call  A::Car.new
         a_2.rb:5:5: constant  A::Car::THINGS
       RUBY
@@ -128,7 +124,6 @@ module Referral
         a_1.rb:2:0: class  A::Car
         a_1.rb:3:2: constant_declaration A::Car THINGS
         a_1.rb:4:2: instance_method A::Car vroom!
-        a_1.rb:5:4: function_call A::Car#vroom! puts
         a_2.rb:3:6: call  A::Car.new
         a_2.rb:5:5: constant  A::Car::THINGS
       RUBY
@@ -144,6 +139,7 @@ module Referral
         a_2.rb:5:5: constant  A::Car::THINGS
       RUBY
     end
+    # TODO - so if it's an identifier it seems like we should link qname
 
     def test_full_name
       fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture/a") {
@@ -173,8 +169,20 @@ module Referral
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
         a_1.rb:4:2: instance_method A::Car vroom!
-        a_1.rb:5:4: function_call A::Car#vroom! puts
         a_2.rb:7:0: call  car.vroom!
+      RUBY
+    end
+
+    def test_exact_name_only_hits_names_not_references
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--exact-name Apple 7.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        7.rb:1:0: class  Apple
+        7.rb:2:2: class_method Apple stir
+        7.rb:6:2: instance_method Apple sauce
+        7.rb:13:25: call Recipe.new Apple.new
       RUBY
     end
 
@@ -261,7 +269,7 @@ module Referral
         ce748d5 A::Car class
         793b0f6 A::Car::THINGS constant_declaration
         dc3179e A::Car#vroom! instance_method
-        484adc9 A::Car#vroom!.puts function_call
+        484adc9 puts function_call
         6074cce A::B module
         ddd4ecb require_relative function_call
         a3616b5 car local_var_assign

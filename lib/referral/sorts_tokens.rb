@@ -8,9 +8,9 @@ module Referral
       }
     },
     scope: ->(tokens) {
-      max_length = tokens.map { |t| t.fully_qualified.size }.max
+      max_length = tokens.map { |t| t.scope_and_names.size }.max
       tokens.sort_by { |token|
-        names = token.fully_qualified.map { |fq| fq.name.to_s }
+        names = token.scope_and_names.map { |fq| fq.name.to_s }
         [
           *names.fill("", names.size...max_length),
           token.file, token.line, token.column, token.id,
