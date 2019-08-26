@@ -255,6 +255,45 @@ A few things to note:
   the result set twice: once when parsing the AST, and again when printing
   results
 
+## Running with Ruby version managers
+
+Referral requires Ruby version >= 2.6, but your codebase may be running on something
+older.  You have a few options for using `referral`.  You could 1) change your project's
+ruby while you run `referral` and then change it back, but this seems cumbersome and
+likely to cause annoyance.  There are better ways.
+
+## Run from outside your project's working directory
+
+If you `cd ..` from your project's working directory (assuming in that context
+you are running Ruby 2.6.x), you can run `referral` commands on your codebase by passing
+the path to that codebase to referral:
+
+```
+$ referral MyAwesomeProject/
+```
+
+This works for many of `referrals` features, but isn't ideal when it comes to git;
+columns like `git_sha`, `git_author` or `git_commit_at` will show empty results.
+
+## Running with `rbenv`
+
+If you're using `rbenv`, you _could_ temporarily switch your project's ruby to 2.6.x,
+but you'd have to remember to switch it back again before running any of the code in
+the project.  To instantaneously switch to 2.6 and then back again (after the `referral`
+command finishes), do this (from your `MyAwsomeProject` directory):
+
+```
+$ RBENV_VERSION=2.6.3 referral
+```
+
+## Running with RVM
+
+The corresponding way to do this with `rvm` would be:
+
+```
+$ rvm 2.6.3 do referral
+```
+
 ## Code of Conduct
 
 This project follows Test Double's [code of
