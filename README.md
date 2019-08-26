@@ -269,7 +269,7 @@ you are running Ruby 2.6.x), you can run `referral` commands on your codebase by
 the path to that codebase to referral:
 
 ```
-MyProjects $ referral MyAwesomeProject/
+$ referral MyAwesomeProject/
 ```
 
 This works for many of `referrals` features, but isn't ideal when it comes to git;
@@ -280,10 +280,10 @@ columns like `git_sha`, `git_author` or `git_commit_at` will show empty results.
 If you're using `rbenv`, you _could_ temporarily switch your project's ruby to 2.6.x,
 but you'd have to remember to switch it back again before running any of the code in
 the project.  To instantaneously switch to 2.6 and then back again (after the `referral`
-command finishes), do this:
+command finishes), do this (from your `MyAwsomeProject` directory):
 
 ```
-MyAwesomeProject $ RBENV_VERSION=2.6.3 referral
+$ RBENV_VERSION=2.6.3 referral
 ```
 
 ## Running with RVM
@@ -291,7 +291,7 @@ MyAwesomeProject $ RBENV_VERSION=2.6.3 referral
 The corresponding way to do this with `rvm` would be:
 
 ```
-MyAwesomeProject $ rvm 2.6.3 do referral
+$ rvm 2.6.3 do referral
 ```
 
 ## Code of Conduct
