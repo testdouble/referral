@@ -205,8 +205,8 @@ module Referral
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
         2.rb:1:0: function_call  puts
-        2.rb:1:5: call  zap.+
         2.rb:1:5: local_var_assign  zap
+        2.rb:1:5: call  zap.+
         2.rb:3:0: function_call  puts
         2.rb:3:5: call  zip.*
         2.rb:3:5: local_var_assign  zip
@@ -229,8 +229,8 @@ module Referral
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
         2.rb:1:0: function_call  puts
-        2.rb:1:5: call  zap.+
         2.rb:1:5: local_var_assign  zap
+        2.rb:1:5: call  zap.+
         2.rb:3:0: function_call  puts
         2.rb:3:5: call  zip.*
         2.rb:3:5: local_var_assign  zip
@@ -265,18 +265,18 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        8157996 A module
-        ce748d5 A::Car class
-        793b0f6 A::Car::THINGS constant_declaration
-        dc3179e A::Car#vroom! instance_method
-        484adc9 puts function_call
-        6074cce A::B module
-        ddd4ecb require_relative function_call
-        a3616b5 car local_var_assign
-        72cfd8c A::Car.new call
-        d0ef0c9 puts function_call
-        7f464ab A::Car::THINGS constant
-        d48d374 car.vroom! call
+        a6fac63 A module
+        b93a495 A::Car class
+        8e3cf92 A::Car::THINGS constant_declaration
+        c9bcc9c A::Car#vroom! instance_method
+        383a8c3 puts function_call
+        ed0a5df A::B module
+        4c27e32 require_relative function_call
+        4f0f9a6 car local_var_assign
+        9b0bbd1 A::Car.new call
+        44d6efb puts function_call
+        debac1a A::Car::THINGS constant
+        a60bed2 car.vroom! call
       RUBY
     end
 

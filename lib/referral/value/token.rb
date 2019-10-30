@@ -3,7 +3,7 @@ require "digest/sha1"
 module Referral
   module Value
     class Token < Struct.new(
-      :name, :identifiers, :node_type, :parent, :file, :line, :column,
+      :name, :identifiers, :node_type, :parent, :file, :line, :column, :arity,
       keyword_init: true
     )
 
