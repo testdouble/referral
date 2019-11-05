@@ -269,14 +269,14 @@ module Referral
         b93a495 A::Car class
         8e3cf92 A::Car::THINGS constant_declaration
         c9bcc9c A::Car#vroom! instance_method
-        383a8c3 puts function_call
+        047c53a puts function_call
         ed0a5df A::B module
-        4c27e32 require_relative function_call
+        c577e71 require_relative function_call
         4f0f9a6 car local_var_assign
-        9b0bbd1 A::Car.new call
-        44d6efb puts function_call
+        a220e79 A::Car.new call
+        19a0b90 puts function_call
         debac1a A::Car::THINGS constant
-        a60bed2 car.vroom! call
+        e397cf6 car.vroom! call
       RUBY
     end
 

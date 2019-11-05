@@ -108,7 +108,8 @@ module Referral
       token_type: :reference,
       reverse_identifiers: true,
       good_parent: true,
-      name_finder: ->(node) { node.children[1] }
+      name_finder: ->(node) { node.children[1] },
+      arity_finder: ->(node) { node.children.last&.children&.compact&.count || 0 }
     ),
     function_call: Value::NodeType.new(
       name: :function_call,
@@ -117,7 +118,8 @@ module Referral
       token_type: :reference,
       reverse_identifiers: true,
       good_parent: false,
-      name_finder: ->(node) { node.children[0] }
+      name_finder: ->(node) { node.children[0] },
+      arity_finder: ->(node) { node.children.last&.children&.compact&.count || 0 }
     ),
     local_var: Value::NodeType.new(
       name: :local_var,
