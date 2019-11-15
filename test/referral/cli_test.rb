@@ -406,5 +406,37 @@ module Referral
         8.rb:20:35: constant Haystack::Deep#find.is_a? Needle
       RUBY
     end
+
+    def test_arity_filter_exact
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--arity 1 9.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        9.rb:4:2: call call_me_maybe macarena
+        9.rb:5:2: function_call call_me_maybe barbie_girl
+      RUBY
+    end
+
+    def test_arity_filter_plus
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--arity 2+ 9.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        9.rb:3:2: function_call call_me_maybe blue
+        9.rb:6:2: function_call call_me_maybe mmmbop
+      RUBY
+    end
+
+    def test_arity_0_only_returns_calls
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--arity 0 9.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        9.rb:2:2: function_call call_me_maybe friday!
+      RUBY
+    end
   end
 end
