@@ -43,6 +43,9 @@ module Referral
     git_commit_at: ->(token) {
       GitStore.time(token.file, token.line)&.utc&.iso8601
     },
+    arity: ->(token) {
+      token.arity
+    },
 
   }
 

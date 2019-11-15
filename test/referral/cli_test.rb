@@ -438,5 +438,21 @@ module Referral
         9.rb:2:2: function_call call_me_maybe friday!
       RUBY
     end
+
+    def test_arity_output
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[-c arity,source 9.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+         def call_me_maybe
+        0   friday!
+        4   blue(1, \"fish\", 2, \"fish\")
+        1   hey.macarena(1993)
+        1   barbie_girl(by: :aqua, in_a: \"barbie world\")
+        2   mmmbop(1997, brother_count: 3)
+           _chumbawamba = \"Tubthmping\"
+      RUBY
+    end
   end
 end
