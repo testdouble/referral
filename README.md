@@ -249,7 +249,10 @@ A few things to note:
 * Each of `--name`, `--exact-name`, `--full-name`, `--scope`, `--type`, and `--columns`
   accept comma-separated arrays (e.g. `--name foo,bar,baz`)
 
-* `--arity` supports a single digit with an optional `+`.  e.g. `--arity 0` or `--arity 1+`
+* `--arity` accepts a number with an optional `+` or `-`.
+  *  `--arity 0`  Match calls with 0 arguments
+  *  `--arity 1+` Match calls with 1 or more arguments
+  *  `--arity 1-` Match calls with 1 or fewer arguments
 
 * You can browse available sort functions [in
   Referral::SORT_FUNCTIONS](/lib/referral/sorts_tokens.rb) for use with

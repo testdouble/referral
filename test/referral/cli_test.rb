@@ -429,6 +429,18 @@ module Referral
       RUBY
     end
 
+    def test_arity_filter_minus
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--arity 1- 9.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        9.rb:2:2: function_call call_me_maybe friday!
+        9.rb:4:2: call call_me_maybe macarena
+        9.rb:5:2: function_call call_me_maybe barbie_girl
+      RUBY
+    end
+
     def test_arity_0_only_returns_calls
       fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
         Cli.new(%w[--arity 0 9.rb]).call

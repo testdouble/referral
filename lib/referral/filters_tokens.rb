@@ -40,6 +40,8 @@ module Referral
         false
       elsif arity.end_with? "+"
         token.arity.to_i >= arity.to_i
+      elsif arity.end_with? "-"
+        token.arity.to_i <= arity.to_i
       else
         token.arity.to_i == arity.to_i
       end
