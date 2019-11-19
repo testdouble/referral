@@ -35,7 +35,7 @@ module Referral
         true
       end
     },
-    arity: -> (token, arity) {
+    arity: ->(token, arity) {
       if token.arity.nil?
         false
       elsif arity.end_with? "+"
