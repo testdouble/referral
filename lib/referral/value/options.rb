@@ -10,6 +10,7 @@ module Referral
       :pattern,
       :type,
       :include_unnamed,
+      :arity,
       # Sorting
       :sort,
       # Printing

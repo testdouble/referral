@@ -204,6 +204,23 @@ app/lib/presents_review_result.rb:60:2: 2019-06-02T02:38:01Z   def item_result(s
 
 `find` couldn't have told me that (I don't think)!
 
+### Recipe:  Find calls that have more than 1 argument
+
+[Recently I was upgrading the i18n gem](http://blog.testdouble.com/posts/2019-10-15-lets-hash-this-out/) and came across some bugs introduced by [this change](https://github.com/ruby-i18n/i18n/commit/5eeaad7fb35f9a30f654e3bdeb6933daa7fd421d#diff-14d9864ac07456d554843dc2a3b174a4L179). To fix the issue, I started looking at all the places `I18n.t` was called from:
+
+```
+referral --type call --exact-name I18n.t -c location,source
+```
+
+Unfortunately, this produces 250+ false positives because the predominant usage was to pass a single argument to `t`. Only calls with more than 1 argument are affected by this change. `--pattern` doesn't work very well in this codebase, because calls to `t` with multiple arguments are more likely to be multiline.
+
+```
+referral --type call --exact-name I18n.t --arity 2+ -c location,source,arity
+```
+
+This produced 27 results I could quickly skim through.
+
+
 ## Options
 
 Referral provides a lot of options. The help output of `referral --help` will
@@ -219,6 +236,7 @@ Usage: referral [options] files
         --scope [SCOPE]              Scope(s) in which to filter (e.g. Hastack#hide)
     -p, --pattern [PATTERN]          Regex pattern to filter
     -t, --type [TYPES]               Include only certain types. See Referral::TOKEN_TYPES.
+        --arity [ARITY]              Number of arguments to a method call.  (e.g. 2+)
         --include-unnamed            Include reference without identifiers (default: false)
     -s, --sort {file,scope}          (default: file). See Referral::SORT_FUNCTIONS
         --print-headers              Print header names (default: false)
@@ -230,6 +248,11 @@ A few things to note:
 
 * Each of `--name`, `--exact-name`, `--full-name`, `--scope`, `--type`, and `--columns`
   accept comma-separated arrays (e.g. `--name foo,bar,baz`)
+
+* `--arity` accepts a number with an optional `+` or `-`.
+  *  `--arity 0`  Match calls with 0 arguments
+  *  `--arity 1+` Match calls with 1 or more arguments
+  *  `--arity 1-` Match calls with 1 or fewer arguments
 
 * You can browse available sort functions [in
   Referral::SORT_FUNCTIONS](/lib/referral/sorts_tokens.rb) for use with

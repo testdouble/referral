@@ -23,22 +23,23 @@ module Referral
       assert_includes tokens, token_for(:THINGS, :constant_def, 11, 4, foo)
       assert_includes tokens, token_for(:foz, :class_method, 13, 4, foo)
       assert_includes tokens, token_for(:fiz, :instance_method, 16, 4, foo)
-      assert_includes tokens, token_for(:baz, :call, 22, 0, nil)
-      assert_includes tokens, a_puts = token_for(:puts, :function_call, 24, 0, nil)
+      assert_includes tokens, token_for(:baz, :call, 22, 0, nil, 0)
+      assert_includes tokens, a_puts = token_for(:puts, :function_call, 24, 0, nil, 1)
       assert_includes tokens, token_for(:THINGS, :double_colon, 24, 8, a_puts)
-      assert_includes tokens, token_for(:fiz, :call, 26, 0, nil)
+      assert_includes tokens, token_for(:fiz, :call, 26, 0, nil, 0)
     end
 
     private
 
-    def token_for(name, type, line, column, parent = nil)
+    def token_for(name, type, line, column, parent = nil, arity = nil)
       Value::Token.new(
         name: name,
         node_type: TOKEN_TYPES[type],
         parent: parent,
         file: @file,
         line: line,
-        column: column
+        column: column,
+        arity: arity
       )
     end
   end

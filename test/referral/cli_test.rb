@@ -205,8 +205,8 @@ module Referral
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
         2.rb:1:0: function_call  puts
-        2.rb:1:5: call  zap.+
         2.rb:1:5: local_var_assign  zap
+        2.rb:1:5: call  zap.+
         2.rb:3:0: function_call  puts
         2.rb:3:5: call  zip.*
         2.rb:3:5: local_var_assign  zip
@@ -229,8 +229,8 @@ module Referral
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
         2.rb:1:0: function_call  puts
-        2.rb:1:5: call  zap.+
         2.rb:1:5: local_var_assign  zap
+        2.rb:1:5: call  zap.+
         2.rb:3:0: function_call  puts
         2.rb:3:5: call  zip.*
         2.rb:3:5: local_var_assign  zip
@@ -265,18 +265,18 @@ module Referral
       }
       assert_empty fake_err.string
       assert_equal <<~RUBY, fake_out.string
-        8157996 A module
-        ce748d5 A::Car class
-        793b0f6 A::Car::THINGS constant_declaration
-        dc3179e A::Car#vroom! instance_method
-        484adc9 puts function_call
-        6074cce A::B module
-        ddd4ecb require_relative function_call
-        a3616b5 car local_var_assign
-        72cfd8c A::Car.new call
-        d0ef0c9 puts function_call
-        7f464ab A::Car::THINGS constant
-        d48d374 car.vroom! call
+        a6fac63 A module
+        b93a495 A::Car class
+        8e3cf92 A::Car::THINGS constant_declaration
+        c9bcc9c A::Car#vroom! instance_method
+        047c53a puts function_call
+        ed0a5df A::B module
+        c577e71 require_relative function_call
+        4f0f9a6 car local_var_assign
+        a220e79 A::Car.new call
+        19a0b90 puts function_call
+        debac1a A::Car::THINGS constant
+        e397cf6 car.vroom! call
       RUBY
     end
 
@@ -404,6 +404,66 @@ module Referral
       assert_equal <<~RUBY, fake_out.string
         8.rb:13:6: call Haystack#hide Needle.poke
         8.rb:20:35: constant Haystack::Deep#find.is_a? Needle
+      RUBY
+    end
+
+    def test_arity_filter_exact
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--arity 1 9.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        9.rb:4:2: call call_me_maybe macarena
+        9.rb:5:2: function_call call_me_maybe barbie_girl
+      RUBY
+    end
+
+    def test_arity_filter_plus
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--arity 2+ 9.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        9.rb:3:2: function_call call_me_maybe blue
+        9.rb:6:2: function_call call_me_maybe mmmbop
+      RUBY
+    end
+
+    def test_arity_filter_minus
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--arity 1- 9.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        9.rb:2:2: function_call call_me_maybe friday!
+        9.rb:4:2: call call_me_maybe macarena
+        9.rb:5:2: function_call call_me_maybe barbie_girl
+      RUBY
+    end
+
+    def test_arity_0_only_returns_calls
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[--arity 0 9.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+        9.rb:2:2: function_call call_me_maybe friday!
+      RUBY
+    end
+
+    def test_arity_output
+      fake_out, fake_err, _ = do_with_fake_io(cwd: "test/fixture") {
+        Cli.new(%w[-c arity,source 9.rb]).call
+      }
+      assert_empty fake_err.string
+      assert_equal <<~RUBY, fake_out.string
+         def call_me_maybe
+        0   friday!
+        4   blue(1, \"fish\", 2, \"fish\")
+        1   hey.macarena(1993)
+        1   barbie_girl(by: :aqua, in_a: \"barbie world\")
+        2   mmmbop(1997, brother_count: 3)
+           _chumbawamba = \"Tubthmping\"
       RUBY
     end
   end

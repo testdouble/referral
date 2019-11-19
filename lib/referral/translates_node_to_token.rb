@@ -12,7 +12,8 @@ module Referral
         parent: parent,
         file: file,
         line: node.first_lineno,
-        column: node.first_column
+        column: node.first_column,
+        arity: type&.arity_finder&.call(node)
       )
     end
   end

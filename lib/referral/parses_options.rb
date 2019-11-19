@@ -25,6 +25,7 @@ module Referral
         op.on("--scope [SCOPE]", Array, "Scope(s) in which to filter (e.g. Hastack#hide)")
         op.on("-p", "--pattern [PATTERN]", Regexp, "Regex pattern to filter")
         op.on("-t", "--type [TYPES]", Array, "Include only certain types. See Referral::TOKEN_TYPES.")
+        op.on("--arity [ARITY]", "Number of arguments to a method call.  (e.g. 2+)")
         op.on("--include-unnamed", TrueClass, "Include reference without identifiers (default: false)")
         op.on("-s", "--sort {file,scope}", "(default: file). See Referral::SORT_FUNCTIONS")
         op.on("--print-headers", TrueClass, "Print header names (default: false)")

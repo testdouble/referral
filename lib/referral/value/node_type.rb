@@ -8,6 +8,7 @@ module Referral
       :token_type,
       :reverse_identifiers,
       :good_parent,
+      :arity_finder,
       keyword_init: true
     )
     end
