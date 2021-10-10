@@ -7,8 +7,11 @@ module Referral
 
     def self.sha(file, line)
       return unless (output = blame_line(file, line))
-      return unless (match = output.match(/^(\w+)/))
-      match[1]
+      if (match = output.match(/^(\w+)/))
+        match[1]
+      else
+        puts "Unexpected Git output: #{output.inspect}"
+      end
     end
 
     def self.author(file, line)
