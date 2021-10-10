@@ -45,7 +45,7 @@ module Referral
     },
     arity: ->(token) {
       token.arity
-    },
+    }
 
   }
 

@@ -10,7 +10,7 @@ module Referral
       def scope_and_names
         [
           *parent&.scope_and_names,
-          *literal_name_tokens,
+          *literal_name_tokens
         ].compact
       end
 
@@ -36,7 +36,7 @@ module Referral
       def full_name_tokens
         [
           *(include_parents_in_full_name? ? parent&.scope_and_names : []),
-          *literal_name_tokens,
+          *literal_name_tokens
         ].compact
       end
 

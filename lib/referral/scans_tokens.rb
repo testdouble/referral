@@ -31,7 +31,7 @@ module Referral
 
         if (token = @translates_node_to_token.call(node, parent, file))
           @tokenizes_identifiers.call(node, token)
-          [token, *find_tokens(node.children[1..-1], token, file)]
+          [token, *find_tokens(node.children[1..], token, file)]
         else
           find_tokens(node.children, parent, file)
         end

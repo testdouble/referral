@@ -29,7 +29,7 @@ module Referral
         delimiter: " ",
         include_unnamed: false,
         sort: "file",
-        print_headers: false,
+        print_headers: false
       ).freeze
 
       def merge(new_opts)

@@ -6,37 +6,43 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    ast (2.4.0)
-    jaro_winkler (1.5.3)
+    ast (2.4.2)
     minitest (5.11.3)
-    parallel (1.17.0)
-    parser (2.6.3.0)
-      ast (~> 2.4.0)
-    psych (3.1.0)
+    parallel (1.21.0)
+    parser (3.0.2.0)
+      ast (~> 2.4.1)
     rainbow (3.0.0)
     rake (13.0.1)
-    rubocop (0.67.2)
-      jaro_winkler (~> 1.5.1)
+    regexp_parser (2.1.1)
+    rexml (3.2.5)
+    rubocop (1.20.0)
       parallel (~> 1.10)
-      parser (>= 2.5, != 2.5.1.1)
-      psych (>= 3.1.0)
+      parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml
+      rubocop-ast (>= 1.9.1, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 1.6)
-    ruby-progressbar (1.10.1)
-    standard (0.0.41)
-      rubocop (~> 0.67.1)
-    unicode-display_width (1.5.0)
+      unicode-display_width (>= 1.4.0, < 3.0)
+    rubocop-ast (1.12.0)
+      parser (>= 3.0.1.1)
+    rubocop-performance (1.11.5)
+      rubocop (>= 1.7.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
+    ruby-progressbar (1.11.0)
+    standard (1.3.0)
+      rubocop (= 1.20.0)
+      rubocop-performance (= 1.11.5)
+    unicode-display_width (2.1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.17.3)
-  minitest (~> 5.0)
-  rake (~> 13.0)
+  minitest
+  rake
   referral!
   standard
 
 BUNDLED WITH
-   1.17.3
+   2.2.15

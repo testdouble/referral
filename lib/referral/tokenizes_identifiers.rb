@@ -25,7 +25,7 @@ module Referral
 
       [
         *find_names(node.children.first, parent),
-        @translates_node_to_token.call(node, parent, parent.file),
+        @translates_node_to_token.call(node, parent, parent.file)
       ].compact
     end
   end

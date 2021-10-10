@@ -13,7 +13,7 @@ module Referral
         names = token.scope_and_names.map { |fq| fq.name.to_s }
         [
           *names.fill("", names.size...max_length),
-          token.file, token.line, token.column, token.id,
+          token.file, token.line, token.column, token.id
         ]
       }
     },
@@ -21,7 +21,7 @@ module Referral
       tokens.sort_by do |token|
         [
           GitStore.time(token.file, token.line).to_i,
-          token.file, token.line, token.column, token.id,
+          token.file, token.line, token.column, token.id
         ]
       end
     },
@@ -29,10 +29,10 @@ module Referral
       tokens.sort_by { |token|
         [
           -1 * GitStore.time(token.file, token.line).to_i,
-          token.file, token.line, token.column, token.id,
+          token.file, token.line, token.column, token.id
         ]
       }
-    },
+    }
   }
   class SortsTokens
     def call(tokens, options)

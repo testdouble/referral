@@ -5,7 +5,7 @@ module Referral
     double_colon: "::",
     dot: ".",
     hash: "#",
-    tilde: "~",
+    tilde: "~"
   }
   TOKEN_TYPES = {
     module: Value::NodeType.new(
@@ -15,7 +15,7 @@ module Referral
       token_type: :definition,
       reverse_identifiers: false,
       good_parent: true,
-      name_finder: ->(node) { nil }
+      name_finder: ->(node) {}
     ),
     class: Value::NodeType.new(
       name: :class,
@@ -24,7 +24,7 @@ module Referral
       token_type: :definition,
       reverse_identifiers: false,
       good_parent: true,
-      name_finder: ->(node) { nil }
+      name_finder: ->(node) {}
     ),
     constant_def: Value::NodeType.new(
       name: :constant_declaration,
@@ -183,6 +183,6 @@ module Referral
       reverse_identifiers: true,
       good_parent: false,
       name_finder: ->(node) { node.children[0] }
-    ),
+    )
   }
 end

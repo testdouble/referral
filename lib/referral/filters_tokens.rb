@@ -45,7 +45,7 @@ module Referral
       else
         token.arity.to_i == arity.to_i
       end
-    },
+    }
   }
   class FiltersTokens
     def call(tokens, options)
