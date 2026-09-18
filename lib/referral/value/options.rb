@@ -19,7 +19,6 @@ module Referral
       :delimiter,
       keyword_init: true
     )
-
       def self.default(overrides = {})
         DEFAULT.merge({files: Dir["**/*.rb"]}.merge(overrides))
       end
