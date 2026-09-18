@@ -459,11 +459,11 @@ module Referral
       assert_equal <<~RUBY, fake_out.string
          def call_me_maybe
         0   friday!
-        4   blue(1, \"fish\", 2, \"fish\")
+        4   blue(1, "fish", 2, "fish")
         1   hey.macarena(1993)
-        1   barbie_girl(by: :aqua, in_a: \"barbie world\")
+        1   barbie_girl(by: :aqua, in_a: "barbie world")
         2   mmmbop(1997, brother_count: 3)
-           _chumbawamba = \"Tubthmping\"
+           _chumbawamba = "Tubthmping"
       RUBY
     end
   end

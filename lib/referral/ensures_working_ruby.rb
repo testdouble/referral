@@ -4,7 +4,8 @@ module Referral
   class EnsuresWorkingRuby
     def call
       major, minor = RUBY_VERSION.split(".").map(&:to_i)
-      unless major >= 3 || (major == 2 && minor >= 6)
+      supported = major >= 3 || (major == 2 && minor >= 6)
+      unless supported
         warn <<-ERROR.gsub(/^ {10}/, "")
           Error: referral must be run with Ruby 2.6 or later, but this is #{RUBY_VERSION}.
                  You can often analyze older Ruby code by running this CLI with a newer

@@ -6,7 +6,6 @@ module Referral
       :name, :identifiers, :node_type, :parent, :file, :line, :column, :arity,
       keyword_init: true
     )
-
       def scope_and_names
         [
           *parent&.scope_and_names,
@@ -57,11 +56,16 @@ module Referral
       end
 
       def id
-        Digest::SHA1.hexdigest(to_h.merge(
+        h = to_h.merge(
           parent: nil,
           identifiers: identifiers&.map(&:id),
           node_type: node_type.name
-        ).inspect)[0..6]
+        )
+        # Hand-rolled instead of Hash#inspect: Ruby 3.4 changed that format
+        # (`:key=>value` -> `key: value`), which would change `id` output
+        # depending on which Ruby version generated it.
+        serialized = "{#{h.map { |k, v| "#{k.inspect}=>#{v.inspect}" }.join(", ")}}"
+        Digest::SHA1.hexdigest(serialized)[0..6]
       end
 
       protected
